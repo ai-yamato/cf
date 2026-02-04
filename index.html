@@ -1,366 +1,590 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
+<!-- saved from url=(0060)file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html -->
+<html lang="ja"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>医療クラウドファンディング・サポート支援レポート</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        /* Chosen Palette: Warm Neutrals & Medical Teal */
-        /* Background: #fafaf9 (Stone 50) - Calming base */
-        /* Primary Text: #1c1917 (Stone 900) - High readability */
-        /* Accent: #0d9488 (Teal 600) - Trust, Health, Support */
-        /* Highlight: #f43f5e (Rose 500) - For urgent metrics or calls to action */
-        
-        body {
-            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-            background-color: #fafaf9;
-            color: #1c1917;
+    <script src="./index_files/saved_resource"></script>
+    <script src="./index_files/chart.js.ダウンロード"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./index_files/css2" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
         }
-
+    </script>
+    <style>
+        body {
+            font-feature-settings: "palt";
+            letter-spacing: 0.025em;
+            line-height: 1.8;
+        }
         .chart-container {
             position: relative;
             width: 100%;
-            max-width: 600px;
-            height: 300px; /* Mobile base height */
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 380px;
+            height: 300px;
+            margin: 0 auto;
         }
-
         @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
+            .chart-container { height: 340px; }
         }
-
-        .card-hover {
-            transition: all 0.3s ease;
+        .section-label {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.1em;
         }
-        .card-hover:hover {
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+        }
+        .accordion-content.open {
+            max-height: 800px;
+        }
+        .card-enter {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-enter:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 24px -8px rgba(0,0,0,0.1);
         }
-
-        /* Custom Scrollbar for internal overflow elements */
-        .custom-scroll::-webkit-scrollbar {
-            width: 6px;
+        .case-card {
+            transition: border-color 0.2s ease;
         }
-        .custom-scroll::-webkit-scrollbar-track {
-            background: #f1f1f1; 
+        .case-card:hover {
+            border-color: #94a3b8;
         }
-        .custom-scroll::-webkit-scrollbar-thumb {
-            background: #d6d3d1; 
-            border-radius: 3px;
+        .detail-table th {
+            background-color: #f8fafc;
         }
-        .custom-scroll::-webkit-scrollbar-thumb:hover {
-            background: #a8a29e; 
+        .platform-tab.active {
+            background-color: #1e293b;
+            color: white;
         }
     </style>
-    <!-- Application Structure Plan: 
-         The app is designed as a "Support Strategy Dashboard" rather than a linear report.
-         1. Context & Goal Setting: Immediate visual breakdown of costs to justify the "Why".
-         2. Platform Ecosystem: Comparative analysis of tools (Where).
-         3. Execution Roadmap: Methodology for success (How).
-         4. Human Factor: Sensitive communication guide (Who).
-         Rationale: Users dealing with cancer diagnoses are overwhelmed. The structure prioritizes "Understanding the Need" -> "Choosing the Tool" -> "Taking Action" in a calm, organized flow.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-</head>
-<body class="bg-stone-50 text-stone-800 antialiased selection:bg-teal-100 selection:text-teal-900">
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:"Noto Sans JP", system-ui, sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.sticky{position:sticky}.top-0{top:0px}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-0\.5{margin-top:0.125rem}.mt-1\.5{margin-top:0.375rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.mb-3{margin-bottom:0.75rem}.mt-3{margin-top:0.75rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-3{height:0.75rem}.h-56{height:14rem}.h-fit{height:-moz-fit-content;height:fit-content}.h-1{height:0.25rem}.h-full{height:100%}.w-3{width:0.75rem}.w-full{width:100%}.w-1{width:0.25rem}.min-w-\[120px\]{min-width:120px}.min-w-\[200px\]{min-width:200px}.max-w-2xl{max-width:42rem}.max-w-3xl{max-width:48rem}.max-w-5xl{max-width:64rem}.max-w-full{max-width:100%}.shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-between{justify-content:space-between}.gap-10{gap:2.5rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-1 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.25rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.space-y-5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.25rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.25rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-l-2{border-left-width:2px}.border-t{border-top-width:1px}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-200\/60{border-color:rgb(226 232 240 / 0.6)}.border-slate-200\/80{border-color:rgb(226 232 240 / 0.8)}.border-teal-100{--tw-border-opacity:1;border-color:rgb(204 251 241 / var(--tw-border-opacity, 1))}.border-teal-400{--tw-border-opacity:1;border-color:rgb(45 212 191 / var(--tw-border-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-amber-50{--tw-bg-opacity:1;background-color:rgb(255 251 235 / var(--tw-bg-opacity, 1))}.bg-amber-500{--tw-bg-opacity:1;background-color:rgb(245 158 11 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-100\/50{background-color:rgb(241 245 249 / 0.5)}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-400{--tw-bg-opacity:1;background-color:rgb(148 163 184 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-teal-50{--tw-bg-opacity:1;background-color:rgb(240 253 250 / var(--tw-bg-opacity, 1))}.bg-teal-50\/50{background-color:rgb(240 253 250 / 0.5)}.bg-teal-500{--tw-bg-opacity:1;background-color:rgb(20 184 166 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-white\/80{background-color:rgb(255 255 255 / 0.8)}.bg-emerald-50{--tw-bg-opacity:1;background-color:rgb(236 253 245 / var(--tw-bg-opacity, 1))}.bg-orange-50{--tw-bg-opacity:1;background-color:rgb(255 247 237 / var(--tw-bg-opacity, 1))}.bg-teal-400{--tw-bg-opacity:1;background-color:rgb(45 212 191 / var(--tw-bg-opacity, 1))}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-base{font-size:1rem;line-height:1.5rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.text-lg{font-size:1.125rem;line-height:1.75rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.tracking-wide{letter-spacing:0.025em}.tracking-widest{letter-spacing:0.1em}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-amber-600{--tw-text-opacity:1;color:rgb(217 119 6 / var(--tw-text-opacity, 1))}.text-amber-700{--tw-text-opacity:1;color:rgb(180 83 9 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-teal-600{--tw-text-opacity:1;color:rgb(13 148 136 / var(--tw-text-opacity, 1))}.text-teal-700{--tw-text-opacity:1;color:rgb(15 118 110 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87 / var(--tw-text-opacity, 1))}.text-orange-700{--tw-text-opacity:1;color:rgb(194 65 12 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:text-slate-800:hover{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}@media (min-width: 768px){.md\:flex{display:flex}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:px-8{padding-left:2rem;padding-right:2rem}.md\:py-16{padding-top:4rem;padding-bottom:4rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-lg{font-size:1.125rem;line-height:1.75rem}}@media (min-width: 1024px){.lg\:col-span-2{grid-column:span 2 / span 2}.lg\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.lg\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}}</style></head>
+<body class="bg-slate-50 text-slate-700 antialiased">
 
     <!-- Header -->
-    <header class="bg-white border-b border-stone-200 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-xl md:text-2xl font-bold text-teal-800 tracking-tight">
-                🤝 医療支援プロジェクト・プランニング
-            </h1>
-            <nav class="hidden md:flex space-x-6 text-sm font-medium text-stone-600">
-                <a href="#costs" class="hover:text-teal-600 transition">資金の内訳</a>
-                <a href="#platforms" class="hover:text-teal-600 transition">サイト選定</a>
-                <a href="#process" class="hover:text-teal-600 transition">実施方法</a>
-                <a href="#communication" class="hover:text-teal-600 transition">本人への提案</a>
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-5 md:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-base md:text-lg font-semibold text-slate-800">医療支援プロジェクト・プランニング</h1>
+            <nav class="hidden md:flex gap-6 text-sm text-slate-500">
+                <a href="file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html#costs" class="hover:text-slate-800 transition-colors">資金の内訳</a>
+                <a href="file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html#platforms" class="hover:text-slate-800 transition-colors">サイト選定</a>
+                <a href="file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html#cases" class="hover:text-slate-800 transition-colors">成功事例</a>
+                <a href="file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html#process" class="hover:text-slate-800 transition-colors">実施方法</a>
+                <a href="file:///C:/Users/Taniyama%20Tomoya/Downloads/CF_final_2.html#communication" class="hover:text-slate-800 transition-colors">本人への提案</a>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+    <main class="max-w-5xl mx-auto px-5 md:px-8">
 
-        <!-- Intro Section -->
-        <section class="text-center max-w-3xl mx-auto">
-            <p class="text-lg text-stone-600 leading-relaxed">
-                職場の同僚へ、クラウドファンディングを通じた支援を検討するためのリサーチレポートです。<br>
-                目標金額の目安、最適なプラットフォーム、そして最も繊細な「本人・家族との合意形成」についてまとめています。
+        <!-- Hero -->
+        <section class="py-12 md:py-16 border-b border-slate-200/60">
+            <p class="text-xs text-slate-400 tracking-widest uppercase mb-4">Support Planning Report</p>
+            <h2 class="text-2xl md:text-3xl font-semibold text-slate-800 leading-snug mb-6">
+                同僚への医療支援を検討されている方へ
+            </h2>
+            <p class="text-slate-600 leading-relaxed max-w-2xl">
+                職場の同僚へ、クラウドファンディングを通じた支援を検討するためのリサーチレポートです。目標金額の目安、最適なプラットフォーム、そして最も繊細な「本人・ご家族との合意形成」についてまとめています。
             </p>
         </section>
 
-        <!-- Section 1: Financial Analysis (Why & How Much) -->
-        <section id="costs" class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-stone-800 mb-2">📊 1. なぜ、いくら必要なのか (目標設定の目安)</h2>
-                <p class="text-stone-500 text-sm">
-                    がんにかかる費用は治療費だけではありません。目標金額を設定する際は、手数料や予備費を含めた「総費用」で考える必要があります。
-                    以下は、先進医療を含む治療を行う場合の一般的な資金内訳モデルです。
-                </p>
+        <!-- Section 1: Financial Analysis -->
+        <section id="costs" class="py-12 md:py-16 border-b border-slate-200/60">
+            <div class="flex items-start gap-4 mb-8">
+                <span class="section-label text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">01</span>
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800 mb-1">なぜ、いくら必要なのか</h2>
+                    <p class="text-sm text-slate-500">目標設定の目安</p>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <!-- Visualization & Content Choices: 
-                     Goal: Visualize the "Hidden Costs" of medical CF.
-                     Viz: Doughnut Chart.
-                     Justification: Shows parts-to-whole relationship clearly. Highlights that the "Goal Amount" != "Handover Amount".
-                     Interaction: Legend clicking to filter segments (default Chart.js).
-                -->
-                <div class="chart-container">
-                    <canvas id="costBreakdownChart"></canvas>
-                </div>
-                
-                <div class="space-y-6">
-                    <div class="bg-stone-50 p-4 rounded-lg border-l-4 border-teal-500">
-                        <h3 class="font-bold text-lg mb-2">推奨目標金額レンジ: 300万〜500万円</h3>
-                        <p class="text-sm text-stone-600">
+            <p class="text-slate-600 leading-relaxed mb-8 max-w-3xl">
+                がんにかかる費用は治療費だけではありません。目標金額を設定する際は、手数料や予備費を含めた「総費用」で考える必要があります。以下は、先進医療を含む治療を行う場合の一般的な資金内訳モデルです。
+            </p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                <div>
+                    <div class="bg-white border border-slate-200 p-6 mb-8">
+                        <p class="text-xs text-slate-400 tracking-wide mb-2">推奨目標金額レンジ</p>
+                        <p class="text-3xl font-semibold text-slate-800 mb-4">300万〜500万円</p>
+                        <p class="text-sm text-slate-600 leading-relaxed">
                             先進医療（陽子線治療や重粒子線治療など）は全額自己負担となり、約300万円前後が相場です。これに加え、休職による収入減の補填、通院交通費、サプリメント代などを加味すると、このレンジが一般的です。
                         </p>
                     </div>
 
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex items-start">
-                            <span class="text-teal-600 font-bold mr-2">● 治療費 (先進医療等):</span>
-                            保険適用外の治療費。ここが最大の負担となります。
+                    <div class="space-y-4 text-sm">
+                        <div class="flex gap-3">
+                            <span class="w-3 h-3 rounded-full bg-teal-500 mt-1.5 shrink-0"></span>
+                            <div>
+                                <span class="font-medium text-slate-700">治療費（先進医療等）</span>
+                                <p class="text-slate-500 mt-0.5">保険適用外の治療費。ここが最大の負担となります。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 mt-1.5 shrink-0"></span>
+                            <div>
+                                <span class="font-medium text-slate-700">生活・諸経費</span>
+                                <p class="text-slate-500 mt-0.5">入院時の個室代、ウィッグ代、家族の交通費など。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="w-3 h-3 rounded-full bg-slate-400 mt-1.5 shrink-0"></span>
+                            <div>
+                                <span class="font-medium text-slate-700">プラットフォーム手数料</span>
+                                <p class="text-slate-500 mt-0.5">集まった金額の5〜17%が差し引かれます。サイトにより大きく異なります。</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="w-3 h-3 rounded-full bg-slate-200 mt-1.5 shrink-0"></span>
+                            <div>
+                                <span class="font-medium text-slate-700">予備費</span>
+                                <p class="text-slate-500 mt-0.5">予期せぬ追加費用に備えた余剰分。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container bg-white border border-slate-200 p-4 rounded">
+                    <canvas id="costBreakdownChart" width="346" height="306" style="display: block; box-sizing: border-box; height: 306px; width: 346px;"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Platform Selection -->
+        <section id="platforms" class="py-12 md:py-16 border-b border-slate-200/60">
+            <div class="flex items-start gap-4 mb-8">
+                <span class="section-label text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">02</span>
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800 mb-1">どのサイトを使うべきか</h2>
+                    <p class="text-sm text-slate-500">第三者支援（同僚を支援）に対応可能なサイトを比較</p>
+                </div>
+            </div>
+
+            <!-- Platform Filter -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button onclick="filterPlatforms(&#39;all&#39;)" id="btn-all" class="platform-tab active px-4 py-2 text-sm font-medium rounded transition-colors">すべて</button>
+                <button onclick="filterPlatforms(&#39;forgood&#39;)" id="btn-forgood" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">For Good</button>
+                <button onclick="filterPlatforms(&#39;readyfor&#39;)" id="btn-readyfor" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">READYFOR</button>
+                <button onclick="filterPlatforms(&#39;campfire&#39;)" id="btn-campfire" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">CAMPFIRE</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10" id="platform-grid"><div class="bg-white border border-slate-200 p-5 rounded flex flex-col h-full card-enter"><div class="flex items-start justify-between mb-3"><h3 class="font-medium text-slate-800">For Good</h3><span class="text-xs text-teal-700 bg-teal-50 px-2 py-0.5 rounded">第三者支援可</span></div><p class="text-2xl font-semibold text-slate-800 mb-1">実行者0%</p><p class="text-xs text-slate-400 mb-1">実行者手数料</p><p class="text-xs text-slate-500 mb-4">支援者負担: 220円+5%</p><ul class="space-y-2 mb-4 flex-grow"><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>実行者手数料0%</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>診断書・住民票等の審査</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>会計報告・団体規約対応が必要</li></ul><div class="pt-4 border-t border-slate-100"><p class="text-xs text-slate-500 font-medium mb-1">選定ポイント</p><p class="text-xs text-slate-600 leading-relaxed">手取り最大。ただし会計報告・余剰金管理など運用面の準備が必要。</p></div></div><div class="bg-white border border-slate-200 p-5 rounded flex flex-col h-full card-enter"><div class="flex items-start justify-between mb-3"><h3 class="font-medium text-slate-800">READYFOR</h3><span class="text-xs text-teal-700 bg-teal-50 px-2 py-0.5 rounded">第三者支援可</span></div><p class="text-2xl font-semibold text-slate-800 mb-1">14%+税</p><p class="text-xs text-slate-400 mb-1">実行者手数料</p><p class="text-xs text-slate-500 mb-4">支援者負担: 220円/支援</p><ul class="space-y-2 mb-4 flex-grow"><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>医療部門専任サポート</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>達成率80〜90%</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>「寄贈」形式の実績あり</li></ul><div class="pt-4 border-t border-slate-100"><p class="text-xs text-slate-500 font-medium mb-1">選定ポイント</p><p class="text-xs text-slate-600 leading-relaxed">医療系で最多実績。専任サポートあり。審査手順がヘルプに明示。</p></div></div><div class="bg-white border border-slate-200 p-5 rounded flex flex-col h-full card-enter"><div class="flex items-start justify-between mb-3"><h3 class="font-medium text-slate-800">CAMPFIRE</h3><span class="text-xs text-amber-700 bg-amber-50 px-2 py-0.5 rounded">本人/家族のみ</span></div><p class="text-2xl font-semibold text-slate-800 mb-1">12%+税</p><p class="text-xs text-slate-400 mb-1">実行者手数料</p><p class="text-xs text-slate-500 mb-4">支援者負担: 228円〜/支援</p><ul class="space-y-2 mb-4 flex-grow"><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>ユーザー数最大級</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>拡散力が高い</li><li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>Social Good対応</li></ul><div class="pt-4 border-t border-slate-100"><p class="text-xs text-slate-500 font-medium mb-1">選定ポイント</p><p class="text-xs text-slate-600 leading-relaxed">第三者支援は規約で原則不可。本人・家族が実行者になる場合のみ。</p></div></div></div>
+
+            <!-- Detailed Comparison Table -->
+            <div class="bg-white border border-slate-200 rounded overflow-hidden mb-10">
+                <div class="p-5 border-b border-slate-100">
+                    <h3 class="font-medium text-slate-800">詳細比較表</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm detail-table">
+                        <thead>
+                            <tr class="border-b border-slate-200">
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[120px]">項目</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">For Good</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">READYFOR</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">CAMPFIRE</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-600">
+                            <tr class="border-b border-slate-100">
+                                <td class="p-4 font-medium text-slate-700">実行者手数料</td>
+                                <td class="p-4"><span class="text-teal-600 font-semibold">原則0%</span><br><span class="text-xs text-slate-400">支援金は全額受取可</span></td>
+                                <td class="p-4">14%+税<br><span class="text-xs text-slate-400">（運営9%＋決済5%）</span></td>
+                                <td class="p-4">12%+税<br><span class="text-xs text-slate-400">（利用7%＋決済5%）Social Good</span></td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-4 font-medium text-slate-700">支援者負担</td>
+                                <td class="p-4">220円/支援<br>＋支援総額の5%</td>
+                                <td class="p-4">220円/支援</td>
+                                <td class="p-4">228円〜（1万円未満）<br>または支援額の2.27%</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-4 font-medium text-slate-700">募集方式</td>
+                                <td class="p-4">All-inのみ</td>
+                                <td class="p-4">All-or-Nothing<br>All-in（承認制）</td>
+                                <td class="p-4">All-in<br>All-or-Nothing</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-4 font-medium text-slate-700">第三者支援</td>
+                                <td class="p-4"><span class="text-teal-600">可能</span><br><span class="text-xs text-slate-400">診断書・住民票等＋病院実態確認</span></td>
+                                <td class="p-4"><span class="text-teal-600">可能</span><br><span class="text-xs text-slate-400">「寄贈先」明示で実例あり</span></td>
+                                <td class="p-4"><span class="text-amber-600">原則不可</span><br><span class="text-xs text-slate-400">規約で制限・慎重確認必要</span></td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-4 font-medium text-slate-700">入金タイミング</td>
+                                <td class="p-4">終了翌々月7日<br><span class="text-xs text-slate-400">早期入金あり（3%/最低2万円）</span></td>
+                                <td class="p-4">終了翌々月10日<br><span class="text-xs text-slate-400">早期入金オプションあり</span></td>
+                                <td class="p-4">月末締め翌月末</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-medium text-slate-700">審査の特徴</td>
+                                <td class="p-4 text-xs leading-relaxed">ソーシャルグッド限定。余剰金の扱い・会計報告など団体規約面まで要求</td>
+                                <td class="p-4 text-xs leading-relaxed">All-inは寄付金控除対象団体/上場企業等の条件。少額でも実行可能であること等を求める</td>
+                                <td class="p-4 text-xs leading-relaxed">「極端に特定個人の目的」「第三者寄附目的」を制限。個人治療費の代理募集は適合性を慎重確認</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fee Chart -->
+            <div class="bg-white border border-slate-200 p-6 rounded">
+                <h3 class="font-medium text-slate-700 mb-6">手数料比較シミュレーション（500万円達成時）</h3>
+                <div class="chart-container h-56 max-w-full">
+                    <canvas id="feeComparisonChart" width="910" height="224" style="display: block; box-sizing: border-box; height: 224px; width: 910px;"></canvas>
+                </div>
+                <p class="text-xs text-slate-400 text-center mt-4">※For Goodは実行者手数料0%のため、支援者負担分（約5%）のみ。実行者の手取りが最も多くなります。</p>
+            </div>
+
+            <!-- Decision Guide Box -->
+            <div class="mt-8 bg-white border border-slate-200 p-6 rounded">
+                <h3 class="font-medium text-slate-800 mb-4">判断のポイント</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-slate-200">
+                                <th class="text-left p-3 font-medium text-slate-600">観点</th>
+                                <th class="text-left p-3 font-medium text-slate-600">For Good</th>
+                                <th class="text-left p-3 font-medium text-slate-600">READYFOR</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-slate-600">
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium">手取り（500万円達成時）</td>
+                                <td class="p-3 text-teal-600 font-semibold">約500万円</td>
+                                <td class="p-3">約430万円</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium">差額</td>
+                                <td class="p-3 text-teal-600" colspan="2">約70万円の差</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium">達成率（医療系事例）</td>
+                                <td class="p-3">ばらつきあり（2%〜100%）</td>
+                                <td class="p-3 text-teal-600 font-semibold">80〜90%で安定</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium">審査要件</td>
+                                <td class="p-3 text-xs leading-relaxed">診断書・住民票・病院実態確認<br>＋会計報告・余剰金規約・団体規約</td>
+                                <td class="p-3 text-xs leading-relaxed">本人確認書類<br>手順がヘルプに明示</td>
+                            </tr>
+                            <tr class="border-b border-slate-100">
+                                <td class="p-3 font-medium">サポート体制</td>
+                                <td class="p-3">−</td>
+                                <td class="p-3">医療部門専任サポート</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 font-medium">第三者支援の実績</td>
+                                <td class="p-3">可能（条件付き）</td>
+                                <td class="p-3">「寄贈先」明示で掲載実例あり</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-slate-50 p-4 rounded">
+                        <p class="font-medium text-slate-700 mb-2">For Good を選ぶ場合の確認事項</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>・会計報告・余剰金管理に対応できる体制があるか</li>
+                            <li>・「〇〇さんを支援する会」等の団体として動けるか</li>
+                            <li>・審査に時間がかかる可能性を許容できるか</li>
+                        </ul>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded">
+                        <p class="font-medium text-slate-700 mb-2">READYFOR を選ぶ場合の確認事項</p>
+                        <ul class="text-xs text-slate-600 space-y-1">
+                            <li>・手数料14%+税（約70万円差）を許容できるか</li>
+                            <li>・専任サポートを活用する意思があるか</li>
+                            <li>・「寄贈」形式での掲載になる可能性</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-4">※CAMPFIREは第三者支援を規約で原則不可としているため、同僚支援のケースでは比較対象外</p>
+            </div>
+        </section>
+
+        <!-- Section 3: Success Cases -->
+        <section id="cases" class="py-12 md:py-16 border-b border-slate-200/60">
+            <div class="flex items-start gap-4 mb-8">
+                <span class="section-label text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">03</span>
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800 mb-1">実際の医療系プロジェクト事例</h2>
+                    <p class="text-sm text-slate-500">各プラットフォームの実績と傾向</p>
+                </div>
+            </div>
+
+            <!-- Case Filter -->
+            <div class="flex flex-wrap gap-2 mb-8">
+                <button onclick="filterCases(&#39;all&#39;)" id="case-all" class="case-tab px-4 py-2 text-sm font-medium bg-slate-800 text-white rounded transition-colors">すべて</button>
+                <button onclick="filterCases(&#39;forgood&#39;)" id="case-forgood" class="case-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">For Good</button>
+                <button onclick="filterCases(&#39;readyfor&#39;)" id="case-readyfor" class="case-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">READYFOR</button>
+                <button onclick="filterCases(&#39;campfire&#39;)" id="case-campfire" class="case-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">CAMPFIRE</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8" id="cases-grid"><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">For Good</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">小児がんの娘（7歳）の免疫療法</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">601万円</p><p class="text-xs text-slate-400">目標600万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">100%</p><p class="text-xs text-slate-400">263人</p></div></div><a href="https://for-good.net/project/1000791" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://for-good.net/project/1000791</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">For Good</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">再々発小児がん：渡航治療費</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">1325万円</p><p class="text-xs text-slate-400">目標4872万円</p></div><div class="text-right"><p class="text-lg font-medium text-slate-500">27%</p><p class="text-xs text-slate-400">1787人</p></div></div><a href="https://for-good.net/project/1002684" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://for-good.net/project/1002684</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">For Good</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">スキルス胃がん支援</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">841万円</p><p class="text-xs text-slate-400">目標1080万円</p></div><div class="text-right"><p class="text-lg font-medium text-slate-500">78%</p><p class="text-xs text-slate-400">483人</p></div></div><a href="https://for-good.net/project/1002330" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://for-good.net/project/1002330</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">For Good</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">希少がんの新たな治療支援</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">275万円</p><p class="text-xs text-slate-400">目標840万円</p></div><div class="text-right"><p class="text-lg font-medium text-slate-500">33%</p><p class="text-xs text-slate-400">236人</p></div></div><a href="https://for-good.net/project/1002314" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://for-good.net/project/1002314</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded">READYFOR</span><span class="text-xs text-slate-400">2021/11〜12</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">胃がん闘病者への治療支援金（寄贈）</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">207万円</p><p class="text-xs text-slate-400">目標150万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">137%</p><p class="text-xs text-slate-400">182人</p></div></div><a href="https://readyfor.jp/projects/78049" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://readyfor.jp/projects/78049</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded">READYFOR</span><span class="text-xs text-slate-400">2022/7〜9</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">乳がん治療支援：CVポート関連</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">72万円</p><p class="text-xs text-slate-400">目標50万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">144%</p><p class="text-xs text-slate-400">76人</p></div></div><a href="https://readyfor.jp/projects/100933" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://readyfor.jp/projects/100933</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded">READYFOR</span><span class="text-xs text-slate-400">2025/9〜12</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">膵がん治療開発・若手外科医育成</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">2188万円</p><p class="text-xs text-slate-400">目標1000万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">219%</p><p class="text-xs text-slate-400">463人</p></div></div><a href="https://readyfor.jp/projects/toyama-surgery2" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://readyfor.jp/projects/toyama-surgery2</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-orange-700 bg-orange-50 px-2 py-0.5 rounded">CAMPFIRE</span><span class="text-xs text-slate-400">2025/5〜8</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">子宮・膀胱・直腸がん：カテーテル治療の保険適用支援</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">1464万円</p><p class="text-xs text-slate-400">目標500万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">292%</p><p class="text-xs text-slate-400">1129人</p></div></div><a href="https://camp-fire.jp/projects/842914/view" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://camp-fire.jp/projects/842914/view</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-orange-700 bg-orange-50 px-2 py-0.5 rounded">CAMPFIRE</span><span class="text-xs text-slate-400">2025/8〜10</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">治療困難な血液がん（ATL）治療法</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">382万円</p><p class="text-xs text-slate-400">目標2000万円</p></div><div class="text-right"><p class="text-lg font-medium text-slate-500">19%</p><p class="text-xs text-slate-400">139人</p></div></div><a href="https://camp-fire.jp/projects/868702/view" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://camp-fire.jp/projects/868702/view</a></div><div class="case-card bg-white border border-slate-200 p-5 rounded"><div class="flex items-center gap-2 mb-3"><span class="text-xs font-medium text-orange-700 bg-orange-50 px-2 py-0.5 rounded">CAMPFIRE</span><span class="text-xs text-slate-400">2022/5〜7</span></div><h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">乳がん経験者：がん患者のための食堂</h4><div class="flex items-end justify-between"><div><p class="text-xl font-semibold text-slate-800">213万円</p><p class="text-xs text-slate-400">目標50万円</p></div><div class="text-right"><p class="text-lg font-medium text-teal-600">425%</p><p class="text-xs text-slate-400">172人</p></div></div><a href="https://camp-fire.jp/projects/586167/view" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">https://camp-fire.jp/projects/586167/view</a></div></div>
+
+            <!-- Key Insights -->
+            <div class="bg-slate-100/50 border border-slate-200 p-6 rounded">
+                <h3 class="font-medium text-slate-800 mb-4">事例データから見える傾向</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div>
+                        <p class="font-medium text-slate-700 mb-1">目標金額と達成率</p>
+                        <p class="text-slate-500 leading-relaxed">100〜600万円の案件は達成率が高い傾向。4,800万円超の高額案件は達成率27%。</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-slate-700 mb-1">プラットフォーム別傾向</p>
+                        <p class="text-slate-500 leading-relaxed">READYFORは達成率137〜219%と安定。For Goodは2%〜100%とばらつきあり。</p>
+                    </div>
+                    <div>
+                        <p class="font-medium text-slate-700 mb-1">支援者数の目安</p>
+                        <p class="text-slate-500 leading-relaxed">達成案件は概ね100〜500人規模。1,000人超は研究支援など社会的意義の高い案件。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Process -->
+        <section id="process" class="py-12 md:py-16 border-b border-slate-200/60">
+            <div class="flex items-start gap-4 mb-8">
+                <span class="section-label text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">04</span>
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800 mb-1">実施のステップと成功の鍵</h2>
+                    <p class="text-sm text-slate-500">ただページを作るだけでは支援は集まりません。「信頼性」と「拡散」が重要です。</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-3">
+                    <!-- Phase 1 -->
+                    <div class="bg-white border border-slate-200 overflow-hidden rounded">
+                        <button class="w-full flex justify-between items-center p-5 text-left hover:bg-slate-50 transition-colors" onclick="toggleAccordion(&#39;step1&#39;)">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Phase 1</span>
+                                <span class="font-medium text-slate-700">準備（公開2週間前〜）</span>
+                            </div>
+                            <span id="icon-step1" class="text-slate-400 text-sm">＋</span>
+                        </button>
+                        <div id="step1" class="accordion-content border-t border-slate-100">
+                            <div class="p-5 text-sm text-slate-600 leading-relaxed space-y-3">
+                                <p class="font-medium text-teal-700">最重要：診断書・見積もりの準備</p>
+                                <p>サイトの審査には「病名を証明する診断書」と「資金使途の根拠（見積書）」が必須です。</p>
+                                <div class="bg-slate-50 p-3 rounded text-xs">
+                                    <p class="font-medium text-slate-700 mb-1">For Goodの場合の追加要件：</p>
+                                    <p>住民票等の公的書類、使途内訳の提出に加え、病院への実態確認が行われます。また、余剰金の扱いや会計報告についても規約面の準備が必要です。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="bg-white border border-slate-200 overflow-hidden rounded">
+                        <button class="w-full flex justify-between items-center p-5 text-left hover:bg-slate-50 transition-colors" onclick="toggleAccordion(&#39;step2&#39;)">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Phase 2</span>
+                                <span class="font-medium text-slate-700">ストーリー作成</span>
+                            </div>
+                            <span id="icon-step2" class="text-slate-400 text-sm">＋</span>
+                        </button>
+                        <div id="step2" class="accordion-content border-t border-slate-100">
+                            <div class="p-5 text-sm text-slate-600 leading-relaxed space-y-3">
+                                <p>以下の構成で文章を作成します。</p>
+                                <ul class="space-y-2">
+                                    <li class="flex gap-2"><span class="text-slate-400">・</span>これまでの経緯と現在の病状</li>
+                                    <li class="flex gap-2"><span class="text-slate-400">・</span>なぜこの治療が必要なのか（保険適用外の理由）</li>
+                                    <li class="flex gap-2"><span class="text-slate-400">・</span>支援金を何に使うのか（1円単位で明記）</li>
+                                    <li class="flex gap-2"><span class="text-slate-400">・</span>リターン（お礼）の設定（感謝のメールや経過報告が一般的）</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="bg-white border border-slate-200 overflow-hidden rounded">
+                        <button class="w-full flex justify-between items-center p-5 text-left hover:bg-slate-50 transition-colors" onclick="toggleAccordion(&#39;step3&#39;)">
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-0.5 rounded">Phase 3</span>
+                                <span class="font-medium text-slate-700">拡散と運用</span>
+                            </div>
+                            <span id="icon-step3" class="text-slate-400 text-sm">＋</span>
+                        </button>
+                        <div id="step3" class="accordion-content border-t border-slate-100">
+                            <div class="p-5 text-sm text-slate-600 leading-relaxed space-y-3">
+                                <p class="font-medium text-teal-700">最初の5日が勝負</p>
+                                <p>公開直後に支援が伸びないと、サイト内の露出が減ります。職場の有志で「初動の支援」を約束しておく（スタートダッシュ）ことが極めて有効です。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips Sidebar -->
+                <aside class="bg-teal-50/50 border border-teal-100 p-6 rounded h-fit">
+                    <h3 class="font-medium text-slate-800 mb-5">成功率を高めるポイント</h3>
+                    <ul class="space-y-5 text-sm">
+                        <li>
+                            <p class="font-medium text-slate-700 mb-1">顔出し・実名の有無</p>
+                            <p class="text-slate-500 leading-relaxed">信頼性に直結するため推奨されますが、プライバシーとの兼ね合いで「本人は仮名、実行者は実名」というパターンもあります。</p>
                         </li>
-                        <li class="flex items-start">
-                            <span class="text-orange-500 font-bold mr-2">● 生活・諸経費:</span>
-                            入院時の個室代、ウィッグ代、家族の交通費など。
+                        <li>
+                            <p class="font-medium text-slate-700 mb-1">活動報告の頻度</p>
+                            <p class="text-slate-500 leading-relaxed">「治療を受けました」「検査結果が出ました」など、週1回程度の更新があるプロジェクトは支援が集まりやすい傾向にあります。</p>
                         </li>
-                        <li class="flex items-start">
-                            <span class="text-stone-400 font-bold mr-2">● プラットフォーム手数料:</span>
-                            集まった金額の15%〜20%が引かれます。ここを考慮しないと手取りが不足します。
+                        <li>
+                            <p class="font-medium text-slate-700 mb-1">本人確認の透明性</p>
+                            <p class="text-slate-500 leading-relaxed">各サイトで「認証」ステータスが表示されます。本人確認書類の提出を早めに済ませておきましょう。</p>
                         </li>
                     </ul>
-                </div>
+                </aside>
             </div>
         </section>
 
-        <!-- Section 2: Platform Selection (Where) -->
-        <section id="platforms" class="space-y-6">
-            <div class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <!-- Section 5: Communication -->
+        <section id="communication" class="py-12 md:py-16">
+            <div class="flex items-start gap-4 mb-8">
+                <span class="section-label text-xs font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded">05</span>
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800 mb-1">本人・家族への提案方法</h2>
+                    <p class="text-sm text-slate-500">誰が主体となるかが重要です</p>
+                </div>
+            </div>
+
+            <p class="text-slate-600 leading-relaxed mb-8 max-w-3xl">
+                金銭的な支援の申し出は、ありがたい反面、患者さんのプライドを傷つけたり、負担になる場合もあります。
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+                <div class="bg-white border border-slate-200 p-6 rounded card-enter cursor-pointer" onclick="selectRole(&#39;family&#39;)">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-medium text-slate-800">家族が実行者になる</h3>
+                        <span class="text-xs font-medium text-teal-700 bg-teal-50 px-2 py-1 rounded">推奨</span>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">患者の配偶者や親がアカウントを開設し、プロジェクトを立ち上げる。</p>
+                    <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded leading-relaxed">
+                        <span class="font-medium">メリット：</span>本人は治療に専念できる。最も共感を得やすい。全サイトで対応可能。
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 p-6 rounded card-enter cursor-pointer" onclick="selectRole(&#39;friend&#39;)">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-medium text-slate-800">友人・同僚が実行者になる</h3>
+                        <span class="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-1 rounded">要確認</span>
+                    </div>
+                    <p class="text-sm text-slate-600 mb-4">「〇〇さんを救う会」などを結成し、代理で立ち上げる。</p>
+                    <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded leading-relaxed">
+                        <span class="font-medium">注意点：</span>CAMPFIREは原則不可。For Good・READYFORは書類準備の上で可能だが、贈与税の問題あり。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Talk Script -->
+            <div class="bg-slate-100/50 border border-slate-200 p-6 rounded">
+                <h3 class="font-medium text-slate-800 mb-6">提案トークスクリプト例</h3>
+                <div class="space-y-5">
                     <div>
-                        <h2 class="text-2xl font-bold text-stone-800 mb-2">🏢 2. どのサイトを使うべきか</h2>
-                        <p class="text-stone-500 text-sm">
-                            医療系プロジェクトに強いサイトを選ぶことが成功の鍵です。主要3社を比較しました。
-                        </p>
-                    </div>
-                    <!-- Interaction: Filter buttons -->
-                    <div class="mt-4 md:mt-0 flex space-x-2">
-                        <button onclick="filterPlatforms('all')" class="px-4 py-2 text-sm font-medium bg-stone-100 text-stone-600 rounded-full hover:bg-stone-200 focus:ring-2 focus:ring-teal-500 transition active-filter" id="btn-all">全て表示</button>
-                        <button onclick="filterPlatforms('medical')" class="px-4 py-2 text-sm font-medium bg-white border border-stone-200 text-stone-600 rounded-full hover:bg-teal-50 hover:text-teal-700 focus:ring-2 focus:ring-teal-500 transition" id="btn-medical">医療特化</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="platform-grid">
-                    <!-- Cards will be injected via JS -->
-                </div>
-
-                <!-- Visualization & Content Choices:
-                     Goal: Compare costs (Fees).
-                     Viz: Bar Chart.
-                     Justification: Direct comparison of percentage fees is easiest to read in bar format.
-                -->
-                <div class="mt-10 pt-6 border-t border-stone-100">
-                    <h3 class="font-bold text-lg text-stone-700 mb-4">手数料比較シミュレーション (500万円達成時)</h3>
-                    <div class="chart-container h-64">
-                        <canvas id="feeComparisonChart"></canvas>
-                    </div>
-                    <p class="text-xs text-center text-stone-400 mt-2">※税別・プランにより変動する可能性があります。概算として参照してください。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Process & Methodology (How) -->
-        <section id="process" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-stone-800 mb-2">📝 3. 実施のステップと成功の鍵</h2>
-                    <p class="text-stone-500 text-sm">
-                        ただページを作るだけでは支援は集まりません。「信頼性」と「拡散」が重要です。
-                    </p>
-                </div>
-
-                <!-- Interactive Timeline/Accordion -->
-                <div class="space-y-4">
-                    <div class="border border-stone-200 rounded-lg overflow-hidden">
-                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step1')">
-                            <span>📌 フェーズ1: 準備 (公開2週間前〜)</span>
-                            <span id="icon-step1">▼</span>
-                        </button>
-                        <div id="step1" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
-                            <p class="font-bold text-teal-600">最重要: 診断書・見積もりの準備</p>
-                            <p>サイトの審査には「病名を証明する診断書」と「資金使途の根拠（見積書）」が必須です。これを本人が準備できる体調かどうかが最初のハードルです。</p>
+                        <p class="text-xs text-slate-400 tracking-wide mb-2">STEP 1 — 状況の確認（お金の心配を共有する）</p>
+                        <div class="bg-white p-4 rounded border-l-2 border-teal-400">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                「治療に専念してもらうために、私たち職場のメンバーで何かできることはないか話し合っています。特に、先進医療など保険外の治療を検討される際、費用のことがネックになってほしくないと思っています。」
+                            </p>
                         </div>
                     </div>
-
-                    <div class="border border-stone-200 rounded-lg overflow-hidden">
-                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step2')">
-                            <span>✍️ フェーズ2: ストーリー作成</span>
-                            <span id="icon-step2">▼</span>
-                        </button>
-                        <div id="step2" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
-                            <p>以下の構成で文章を作成します。</p>
-                            <ul class="list-disc list-inside text-stone-600 pl-2">
-                                <li>これまでの経緯と現在の病状</li>
-                                <li>なぜこの治療が必要なのか（保険適用外の理由）</li>
-                                <li>支援金を何に使うのか（1円単位で明記）</li>
-                                <li>リターン（お礼）の設定（感謝のメールや経過報告が一般的）</li>
-                            </ul>
+                    <div>
+                        <p class="text-xs text-slate-400 tracking-wide mb-2">STEP 2 — 手段の提示（クラウドファンディングという選択肢）</p>
+                        <div class="bg-white p-4 rounded border-l-2 border-teal-400">
+                            <p class="text-sm text-slate-700 leading-relaxed">
+                                「もし費用面で躊躇されている治療があるなら、クラウドファンディングという方法で、私たちがサポートを集める手伝いができませんか？ 例えば、面倒な手続きや文章作成は私たちが引き受けます。」
+                            </p>
                         </div>
-                    </div>
-
-                    <div class="border border-stone-200 rounded-lg overflow-hidden">
-                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step3')">
-                            <span>📢 フェーズ3: 拡散と運用</span>
-                            <span id="icon-step3">▼</span>
-                        </button>
-                        <div id="step3" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
-                            <p class="font-bold text-teal-600">最初の5日が勝負</p>
-                            <p>公開直後に支援が伸びないと、サイト内の露出が減ります。職場の有志で「初動の支援」を約束しておく（スタートダッシュ）ことが極めて有効です。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Side Column: Tips -->
-            <div class="bg-teal-50 rounded-2xl border border-teal-100 p-6">
-                <h3 class="font-bold text-teal-900 mb-4 text-lg">💡 成功率を高めるポイント</h3>
-                <ul class="space-y-4 text-sm text-teal-800">
-                    <li class="flex gap-3">
-                        <span class="text-2xl">📸</span>
-                        <div>
-                            <span class="font-bold">顔出し・実名の有無</span>
-                            <p class="text-xs mt-1 opacity-80">信頼性に直結するため推奨されますが、プライバシーとの兼ね合いで「本人は仮名、実行者は実名」というパターンもあります。</p>
-                        </div>
-                    </li>
-                    <li class="flex gap-3">
-                        <span class="text-2xl">🔄</span>
-                        <div>
-                            <span class="font-bold">活動報告の頻度</span>
-                            <p class="text-xs mt-1 opacity-80">「治療を受けました」「検査結果が出ました」など、週1回程度の更新があるプロジェクトは支援が集まりやすい傾向にあります。</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Section 4: Communication Strategy (Who) -->
-        <section id="communication" class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
-            <div class="mb-6">
-                <h2 class="text-2xl font-bold text-stone-800 mb-2">🗣 4. 本人・家族への提案方法</h2>
-                <p class="text-stone-500 text-sm">
-                    金銭的な支援の申し出は、ありがたい反面、患者さんのプライドを傷つけたり、負担になる場合もあります。誰が主体となるかが重要です。
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <!-- Toggle Interaction for Role Comparison -->
-                <div class="bg-white border border-stone-200 rounded-xl p-5 card-hover cursor-pointer" onclick="selectRole('family')">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-lg text-stone-800">🏠 家族が実行者になる</h3>
-                        <span class="text-2xl">◎</span>
-                    </div>
-                    <p class="text-sm text-stone-600 mb-2">患者の配偶者や親がアカウントを開設し、プロジェクトを立ち上げる。</p>
-                    <div class="text-xs bg-teal-50 text-teal-700 p-2 rounded">
-                        <strong>メリット:</strong> 本人は治療に専念できる。最も共感を得やすい。
-                    </div>
-                </div>
-
-                <div class="bg-white border border-stone-200 rounded-xl p-5 card-hover cursor-pointer" onclick="selectRole('friend')">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-lg text-stone-800">🏢 友人・同僚が実行者になる</h3>
-                        <span class="text-2xl">△</span>
-                    </div>
-                    <p class="text-sm text-stone-600 mb-2">「〇〇さんを救う会」などを結成し、代理で立ち上げる。</p>
-                    <div class="text-xs bg-orange-50 text-orange-700 p-2 rounded">
-                        <strong>注意点:</strong> 規約上、原則として「治療を受ける本人または2親等以内の家族」しか資金を受け取れないサイトが多い。口座管理の問題などハードルが高い。
-                    </div>
-                </div>
-            </div>
-
-            <!-- Script Generator -->
-            <div class="bg-stone-50 rounded-xl p-6 border border-stone-200">
-                <h3 class="font-bold text-stone-800 mb-4">💬 提案トークスクリプト例</h3>
-                <div class="space-y-4">
-                    <div class="p-4 bg-white rounded-lg shadow-sm">
-                        <p class="text-sm font-bold text-stone-500 mb-2">STEP 1: 状況の確認（お金の心配を共有する）</p>
-                        <p class="text-stone-800">「治療に専念してもらうために、私たち職場のメンバーで何かできることはないか話し合っています。特に、先進医療など保険外の治療を検討される際、費用のことがネックになってほしくないと思っています。」</p>
-                    </div>
-                    <div class="p-4 bg-white rounded-lg shadow-sm">
-                        <p class="text-sm font-bold text-stone-500 mb-2">STEP 2: 手段の提示（クラウドファンディングという選択肢）</p>
-                        <p class="text-stone-800">「もし費用面で躊躇されている治療があるなら、クラウドファンディングという方法で、私たちがサポートを集める手伝いができませんか？ 例えば、面倒な手続きや文章作成は私たちが引き受けます。」</p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- Footer -->
-        <footer class="text-center text-stone-400 text-xs py-8 border-t border-stone-200">
-            <p>※本レポートは一般的な情報をまとめたシミュレーションです。実際のサイト利用規約や医療費は個別の状況により異なります。</p>
-        </footer>
 
     </main>
 
-    <script>
-        // --- Data Definitions ---
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 py-8 mt-8">
+        <p class="text-center text-xs text-slate-400 max-w-5xl mx-auto px-5">
+            ※本レポートは一般的な情報をまとめたシミュレーションです。実際のサイト利用規約や医療費は個別の状況により異なります。
+        </p>
+    </footer>
 
-        // 1. Cost Breakdown Data
-        const costData = {
-            labels: ['治療費(先進医療等)', '入院・通院・生活費', 'プラットフォーム手数料', '予備費'],
-            data: [300, 100, 85, 15], // Example in Man-en (10k yen units) roughly
-            colors: ['#0d9488', '#f97316', '#78716c', '#e5e5e5']
+    <script>
+        // Data
+        var costData = {
+            labels: ['治療費（先進医療等）', '入院・通院・生活費', 'プラットフォーム手数料', '予備費'],
+            data: [300, 100, 85, 15],
+            colors: ['#14b8a6', '#f59e0b', '#94a3b8', '#e2e8f0']
         };
 
-        // 2. Platform Comparison Data
-        const platforms = [
+        var platforms = [
+            {
+                id: 'forgood',
+                name: 'For Good',
+                type: 'social',
+                fee: 0,
+                feeDisplay: '実行者0%',
+                supporterFee: '220円+5%',
+                features: ['実行者手数料0%', '診断書・住民票等の審査', '会計報告・団体規約対応が必要'],
+                recommendation: '手取り最大。ただし会計報告・余剰金管理など運用面の準備が必要。',
+                thirdParty: true
+            },
             {
                 id: 'readyfor',
                 name: 'READYFOR',
                 type: 'medical',
-                fee: 12, // 12% + options often apply, simplifying for comparison (Standard 12% + settlement 5% approx 17 total usually, typical medical plan might differ)
-                feeDisplay: '12% + 決済手数料',
-                features: ['医療部門専任サポートあり', '信頼性が高い', '審査が厳格'],
-                recommendation: '医療系では実績No.1。信頼性を重視するならここ。',
-                url: '#'
+                fee: 14,
+                feeDisplay: '14%+税',
+                supporterFee: '220円/支援',
+                features: ['医療部門専任サポート', '達成率80〜90%', '「寄贈」形式の実績あり'],
+                recommendation: '医療系で最多実績。専任サポートあり。審査手順がヘルプに明示。',
+                thirdParty: true
             },
             {
                 id: 'campfire',
                 name: 'CAMPFIRE',
                 type: 'general',
-                fee: 17, // 17% standard
-                feeDisplay: '17% (手数料+決済)',
-                features: ['ユーザー数最大級', '拡散力が高い', 'GoodMorning(社会貢献特化)'],
-                recommendation: '広く一般から集めたい場合に有利。',
-                url: '#'
-            },
-            {
-                id: 'yuimaaru',
-                name: 'Yuimaaru',
-                type: 'medical',
-                fee: 15, // Varies
-                feeDisplay: '15% 前後',
-                features: ['医療特化型', '寄付控除対応の相談可', '手厚い伴走'],
-                recommendation: 'より専門的なサポートが必要な場合。',
-                url: '#'
+                fee: 12,
+                feeDisplay: '12%+税',
+                supporterFee: '228円〜/支援',
+                features: ['ユーザー数最大級', '拡散力が高い', 'Social Good対応'],
+                recommendation: '第三者支援は規約で原則不可。本人・家族が実行者になる場合のみ。',
+                thirdParty: false
             }
         ];
 
-        // --- Visualization Functions (Chart.js) ---
+        var cases = [
+            { platform: 'forgood', name: '小児がんの娘（7歳）の免疫療法', goal: 600, raised: 601, rate: 100, supporters: 263, url: 'https://for-good.net/project/1000791' },
+            { platform: 'forgood', name: '再々発小児がん：渡航治療費', goal: 4872, raised: 1325, rate: 27, supporters: 1787, url: 'https://for-good.net/project/1002684' },
+            { platform: 'forgood', name: 'スキルス胃がん支援', goal: 1080, raised: 841, rate: 78, supporters: 483, url: 'https://for-good.net/project/1002330' },
+            { platform: 'forgood', name: '希少がんの新たな治療支援', goal: 840, raised: 275, rate: 33, supporters: 236, url: 'https://for-good.net/project/1002314' },
+            { platform: 'readyfor', name: '胃がん闘病者への治療支援金（寄贈）', goal: 150, raised: 207, rate: 137, supporters: 182, period: '2021/11〜12', url: 'https://readyfor.jp/projects/78049' },
+            { platform: 'readyfor', name: '乳がん治療支援：CVポート関連', goal: 50, raised: 72, rate: 144, supporters: 76, period: '2022/7〜9', url: 'https://readyfor.jp/projects/100933' },
+            { platform: 'readyfor', name: '膵がん治療開発・若手外科医育成', goal: 1000, raised: 2188, rate: 219, supporters: 463, period: '2025/9〜12', url: 'https://readyfor.jp/projects/toyama-surgery2' },
+            { platform: 'campfire', name: '子宮・膀胱・直腸がん：カテーテル治療の保険適用支援', goal: 500, raised: 1464, rate: 292, supporters: 1129, period: '2025/5〜8', url: 'https://camp-fire.jp/projects/842914/view' },
+            { platform: 'campfire', name: '治療困難な血液がん（ATL）治療法', goal: 2000, raised: 382, rate: 19, supporters: 139, period: '2025/8〜10', url: 'https://camp-fire.jp/projects/868702/view' },
+            { platform: 'campfire', name: '乳がん経験者：がん患者のための食堂', goal: 50, raised: 213, rate: 425, supporters: 172, period: '2022/5〜7', url: 'https://camp-fire.jp/projects/586167/view' }
+        ];
 
-        let donutChart = null;
-        let barChart = null;
+        // Charts
+        var donutChart = null;
+        var barChart = null;
 
         function initCharts() {
-            // Cost Breakdown Chart
-            const ctxCost = document.getElementById('costBreakdownChart').getContext('2d');
-            donutChart = new Chart(ctxCost, {
+            var ctxCost = document.getElementById('costBreakdownChart');
+            if (!ctxCost) return;
+            
+            donutChart = new Chart(ctxCost.getContext('2d'), {
                 type: 'doughnut',
                 data: {
                     labels: costData.labels,
@@ -374,25 +598,29 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    cutout: '55%',
                     plugins: {
                         legend: {
                             position: 'bottom',
                             labels: {
-                                font: { family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif" },
-                                boxWidth: 12
+                                font: { family: '"Noto Sans JP"', size: 11 },
+                                boxWidth: 12,
+                                padding: 16,
+                                color: '#64748b'
                             }
                         },
                         tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleFont: { family: '"Noto Sans JP"', size: 12 },
+                            bodyFont: { family: '"Noto Sans JP"', size: 12 },
+                            padding: 12,
+                            cornerRadius: 4,
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    let value = context.raw;
-                                    let total = context.chart._metasets[context.datasetIndex].total;
-                                    let percentage = Math.round((value / total) * 100) + '%';
-                                    return label + '約' + value + '万円 (' + percentage + ')';
+                                    var value = context.raw;
+                                    var total = context.chart._metasets[context.datasetIndex].total;
+                                    var percentage = Math.round((value / total) * 100);
+                                    return '約' + value + '万円（' + percentage + '%）';
                                 }
                             }
                         }
@@ -400,17 +628,19 @@
                 }
             });
 
-            // Fee Comparison Chart
-            const ctxFee = document.getElementById('feeComparisonChart').getContext('2d');
-            barChart = new Chart(ctxFee, {
+            var ctxFee = document.getElementById('feeComparisonChart');
+            if (!ctxFee) return;
+            
+            barChart = new Chart(ctxFee.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: platforms.map(p => p.name),
+                    labels: ['For Good', 'READYFOR', 'CAMPFIRE'],
                     datasets: [{
-                        label: '手数料・諸経費目安 (500万円調達時)',
-                        data: platforms.map(p => 500 * (p.fee / 100)), // Calculate estimated fee
-                        backgroundColor: ['#0d9488', '#f97316', '#0ea5e9'],
-                        borderRadius: 4
+                        label: '実行者手数料（万円）',
+                        data: [0, 70, 60],
+                        backgroundColor: ['#14b8a6', '#64748b', '#94a3b8'],
+                        borderRadius: 3,
+                        maxBarThickness: 50
                     }]
                 },
                 options: {
@@ -419,99 +649,196 @@
                     scales: {
                         y: {
                             beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { 
+                                font: { family: '"Noto Sans JP"', size: 11 },
+                                color: '#94a3b8'
+                            },
                             title: {
                                 display: true,
-                                text: '手数料 (万円)'
+                                text: '実行者負担手数料（万円）',
+                                font: { family: '"Noto Sans JP"', size: 11 },
+                                color: '#94a3b8'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { 
+                                font: { family: '"Noto Sans JP"', size: 11 },
+                                color: '#64748b'
                             }
                         }
                     },
                     plugins: {
+                        legend: { display: false },
                         tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.raw + '万円 (' + platforms[context.dataIndex].feeDisplay + ')';
-                                }
-                            }
+                            backgroundColor: '#1e293b',
+                            titleFont: { family: '"Noto Sans JP"', size: 12 },
+                            bodyFont: { family: '"Noto Sans JP"', size: 12 },
+                            padding: 12,
+                            cornerRadius: 4
                         }
                     }
                 }
             });
         }
 
-        // --- Interaction Logic ---
-
+        // Platform rendering
         function renderPlatforms(filterType) {
-            const container = document.getElementById('platform-grid');
-            container.innerHTML = ''; // Clear existing
+            var container = document.getElementById('platform-grid');
+            if (!container) return;
+            
+            container.innerHTML = '';
 
-            const filtered = filterType === 'all' ? platforms : platforms.filter(p => p.type === filterType);
+            var filtered = platforms;
+            if (filterType !== 'all') {
+                filtered = platforms.filter(function(p) { return p.id === filterType; });
+            }
 
-            filtered.forEach(p => {
-                const card = document.createElement('div');
-                card.className = `bg-white border border-stone-200 rounded-xl p-6 card-hover flex flex-col justify-between h-full`;
+            filtered.forEach(function(p) {
+                var card = document.createElement('div');
+                card.className = 'bg-white border border-slate-200 p-5 rounded flex flex-col h-full card-enter';
                 
-                let featuresHtml = p.features.map(f => `<li class="text-xs text-stone-600 flex items-center"><span class="text-teal-500 mr-1">✓</span>${f}</li>`).join('');
+                var featuresHtml = p.features.map(function(f) {
+                    return '<li class="flex items-center gap-2 text-xs text-slate-500"><span class="w-1 h-1 bg-teal-400 rounded-full"></span>' + f + '</li>';
+                }).join('');
 
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <h3 class="font-bold text-xl text-stone-800">${p.name}</h3>
-                            ${p.type === 'medical' ? '<span class="bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full font-bold">医療特化</span>' : ''}
-                        </div>
-                        <p class="text-2xl font-bold text-stone-700 mb-1">${p.feeDisplay}</p>
-                        <p class="text-xs text-stone-400 mb-4">手数料目安</p>
-                        <ul class="space-y-2 mb-4">
-                            ${featuresHtml}
-                        </ul>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-stone-100">
-                        <p class="text-sm font-bold text-stone-700">💡 ポイント</p>
-                        <p class="text-sm text-stone-600 mt-1">${p.recommendation}</p>
-                    </div>
-                `;
+                var thirdPartyBadge = p.thirdParty 
+                    ? '<span class="text-xs text-teal-700 bg-teal-50 px-2 py-0.5 rounded">第三者支援可</span>'
+                    : '<span class="text-xs text-amber-700 bg-amber-50 px-2 py-0.5 rounded">本人/家族のみ</span>';
+
+                card.innerHTML = 
+                    '<div class="flex items-start justify-between mb-3">' +
+                        '<h3 class="font-medium text-slate-800">' + p.name + '</h3>' +
+                        thirdPartyBadge +
+                    '</div>' +
+                    '<p class="text-2xl font-semibold text-slate-800 mb-1">' + p.feeDisplay + '</p>' +
+                    '<p class="text-xs text-slate-400 mb-1">実行者手数料</p>' +
+                    '<p class="text-xs text-slate-500 mb-4">支援者負担: ' + p.supporterFee + '</p>' +
+                    '<ul class="space-y-2 mb-4 flex-grow">' + featuresHtml + '</ul>' +
+                    '<div class="pt-4 border-t border-slate-100">' +
+                        '<p class="text-xs text-slate-500 font-medium mb-1">選定ポイント</p>' +
+                        '<p class="text-xs text-slate-600 leading-relaxed">' + p.recommendation + '</p>' +
+                    '</div>';
                 container.appendChild(card);
             });
         }
 
         function filterPlatforms(type) {
-            // UI State Update
-            document.querySelectorAll('.active-filter').forEach(el => {
-                el.classList.remove('bg-stone-100', 'active-filter');
-                el.classList.add('bg-white');
-            });
-            const activeBtn = document.getElementById(`btn-${type}`);
-            activeBtn.classList.remove('bg-white');
-            activeBtn.classList.add('bg-stone-100', 'active-filter');
-
+            var tabs = document.querySelectorAll('.platform-tab');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+                tabs[i].classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+            }
+            var activeTab = document.getElementById('btn-' + type);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                activeTab.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+            }
             renderPlatforms(type);
         }
 
-        function toggleAccordion(id) {
-            const content = document.getElementById(id);
-            const icon = document.getElementById(`icon-${id}`);
+        // Cases rendering
+        function renderCases(filterType) {
+            var container = document.getElementById('cases-grid');
+            if (!container) return;
             
-            if (content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                icon.textContent = '▲';
-            } else {
-                content.classList.add('hidden');
-                icon.textContent = '▼';
+            container.innerHTML = '';
+
+            var filtered = cases;
+            if (filterType !== 'all') {
+                filtered = cases.filter(function(c) { return c.platform === filterType; });
+            }
+
+            filtered.forEach(function(c) {
+                var card = document.createElement('div');
+                card.className = 'case-card bg-white border border-slate-200 p-5 rounded';
+                
+                var platformLabel = {
+                    'forgood': 'For Good',
+                    'readyfor': 'READYFOR',
+                    'campfire': 'CAMPFIRE'
+                }[c.platform];
+
+                var platformColor = {
+                    'forgood': 'text-emerald-700 bg-emerald-50',
+                    'readyfor': 'text-teal-700 bg-teal-50',
+                    'campfire': 'text-orange-700 bg-orange-50'
+                }[c.platform];
+
+                var rateColor = c.rate >= 100 ? 'text-teal-600' : 'text-slate-500';
+
+                card.innerHTML = 
+                    '<div class="flex items-center gap-2 mb-3">' +
+                        '<span class="text-xs font-medium ' + platformColor + ' px-2 py-0.5 rounded">' + platformLabel + '</span>' +
+                        (c.period ? '<span class="text-xs text-slate-400">' + c.period + '</span>' : '') +
+                    '</div>' +
+                    '<h4 class="font-medium text-slate-800 mb-3 leading-snug text-sm">' + c.name + '</h4>' +
+                    '<div class="flex items-end justify-between">' +
+                        '<div>' +
+                            '<p class="text-xl font-semibold text-slate-800">' + c.raised + '万円</p>' +
+                            '<p class="text-xs text-slate-400">目標' + c.goal + '万円</p>' +
+                        '</div>' +
+                        '<div class="text-right">' +
+                            '<p class="text-lg font-medium ' + rateColor + '">' + c.rate + '%</p>' +
+                            '<p class="text-xs text-slate-400">' + c.supporters + '人</p>' +
+                        '</div>' +
+                    '</div>' +
+                    '<a href="' + c.url + '" target="_blank" rel="noopener" class="block mt-3 text-xs text-teal-600 hover:underline truncate">' + c.url + '</a>';
+                container.appendChild(card);
+            });
+        }
+
+        function filterCases(type) {
+            var tabs = document.querySelectorAll('.case-tab');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].className = 'case-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors';
+            }
+            var activeTab = document.getElementById('case-' + type);
+            if (activeTab) {
+                activeTab.className = 'case-tab px-4 py-2 text-sm font-medium bg-slate-800 text-white rounded transition-colors';
+            }
+            renderCases(type);
+        }
+
+        function toggleAccordion(id) {
+            var content = document.getElementById(id);
+            var icon = document.getElementById('icon-' + id);
+            if (!content || !icon) return;
+            
+            var isOpen = content.classList.contains('open');
+            
+            var allContents = document.querySelectorAll('.accordion-content');
+            var allIcons = document.querySelectorAll('[id^="icon-step"]');
+            
+            for (var i = 0; i < allContents.length; i++) {
+                allContents[i].classList.remove('open');
+            }
+            for (var j = 0; j < allIcons.length; j++) {
+                allIcons[j].textContent = '＋';
+            }
+            
+            if (!isOpen) {
+                content.classList.add('open');
+                icon.textContent = '−';
             }
         }
 
         function selectRole(role) {
-            // Simple visual feedback for interaction
-            alert(role === 'family' 
-                ? '【推奨】家族実行者：本人名義の診断書や口座が使えるため、審査がスムーズです。' 
-                : '【注意】友人実行者：集まった資金を本人に渡す際、贈与税がかかる可能性があります。また、サイトによっては「代理実行」の特約手続きが必要です。必ず事前にプラットフォームへ相談してください。');
+            var message = role === 'family' 
+                ? '【推奨】家族が実行者の場合\n\n本人名義の診断書や口座が使えるため、審査がスムーズに進みます。\n\n全プラットフォーム（For Good, READYFOR, CAMPFIRE）で対応可能です。' 
+                : '【注意】友人・同僚が実行者の場合\n\n■ CAMPFIRE：規約で原則不可（第三者への寄附目的を制限）\n\n■ For Good：診断書・住民票等＋病院実態確認が必要\n\n■ READYFOR：「寄贈先」を明示した形式で実例あり\n\n※集まった資金を本人に渡す際、贈与税がかかる可能性があります。必ず事前にプラットフォームへ相談してください。';
+            alert(message);
         }
 
-        // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
             initCharts();
             renderPlatforms('all');
+            renderCases('all');
         });
-
     </script>
-</body>
-</html>
+
+
+</body></html>
