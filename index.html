@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>医療クラウドファンディング・サポート支援レポート</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chosen Palette: Warm Neutrals & Medical Teal */
+        /* Background: #fafaf9 (Stone 50) - Calming base */
+        /* Primary Text: #1c1917 (Stone 900) - High readability */
+        /* Accent: #0d9488 (Teal 600) - Trust, Health, Support */
+        /* Highlight: #f43f5e (Rose 500) - For urgent metrics or calls to action */
+        
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #fafaf9;
+            color: #1c1917;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 300px; /* Mobile base height */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Custom Scrollbar for internal overflow elements */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #d6d3d1; 
+            border-radius: 3px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #a8a29e; 
+        }
+    </style>
+    <!-- Application Structure Plan: 
+         The app is designed as a "Support Strategy Dashboard" rather than a linear report.
+         1. Context & Goal Setting: Immediate visual breakdown of costs to justify the "Why".
+         2. Platform Ecosystem: Comparative analysis of tools (Where).
+         3. Execution Roadmap: Methodology for success (How).
+         4. Human Factor: Sensitive communication guide (Who).
+         Rationale: Users dealing with cancer diagnoses are overwhelmed. The structure prioritizes "Understanding the Need" -> "Choosing the Tool" -> "Taking Action" in a calm, organized flow.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-stone-50 text-stone-800 antialiased selection:bg-teal-100 selection:text-teal-900">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-stone-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-teal-800 tracking-tight">
+                🤝 医療支援プロジェクト・プランニング
+            </h1>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-stone-600">
+                <a href="#costs" class="hover:text-teal-600 transition">資金の内訳</a>
+                <a href="#platforms" class="hover:text-teal-600 transition">サイト選定</a>
+                <a href="#process" class="hover:text-teal-600 transition">実施方法</a>
+                <a href="#communication" class="hover:text-teal-600 transition">本人への提案</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+        <!-- Intro Section -->
+        <section class="text-center max-w-3xl mx-auto">
+            <p class="text-lg text-stone-600 leading-relaxed">
+                職場の同僚へ、クラウドファンディングを通じた支援を検討するためのリサーチレポートです。<br>
+                目標金額の目安、最適なプラットフォーム、そして最も繊細な「本人・家族との合意形成」についてまとめています。
+            </p>
+        </section>
+
+        <!-- Section 1: Financial Analysis (Why & How Much) -->
+        <section id="costs" class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-stone-800 mb-2">📊 1. なぜ、いくら必要なのか (目標設定の目安)</h2>
+                <p class="text-stone-500 text-sm">
+                    がんにかかる費用は治療費だけではありません。目標金額を設定する際は、手数料や予備費を含めた「総費用」で考える必要があります。
+                    以下は、先進医療を含む治療を行う場合の一般的な資金内訳モデルです。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <!-- Visualization & Content Choices: 
+                     Goal: Visualize the "Hidden Costs" of medical CF.
+                     Viz: Doughnut Chart.
+                     Justification: Shows parts-to-whole relationship clearly. Highlights that the "Goal Amount" != "Handover Amount".
+                     Interaction: Legend clicking to filter segments (default Chart.js).
+                -->
+                <div class="chart-container">
+                    <canvas id="costBreakdownChart"></canvas>
+                </div>
+                
+                <div class="space-y-6">
+                    <div class="bg-stone-50 p-4 rounded-lg border-l-4 border-teal-500">
+                        <h3 class="font-bold text-lg mb-2">推奨目標金額レンジ: 300万〜500万円</h3>
+                        <p class="text-sm text-stone-600">
+                            先進医療（陽子線治療や重粒子線治療など）は全額自己負担となり、約300万円前後が相場です。これに加え、休職による収入減の補填、通院交通費、サプリメント代などを加味すると、このレンジが一般的です。
+                        </p>
+                    </div>
+
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="text-teal-600 font-bold mr-2">● 治療費 (先進医療等):</span>
+                            保険適用外の治療費。ここが最大の負担となります。
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-orange-500 font-bold mr-2">● 生活・諸経費:</span>
+                            入院時の個室代、ウィッグ代、家族の交通費など。
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-stone-400 font-bold mr-2">● プラットフォーム手数料:</span>
+                            集まった金額の15%〜20%が引かれます。ここを考慮しないと手取りが不足します。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Platform Selection (Where) -->
+        <section id="platforms" class="space-y-6">
+            <div class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-stone-800 mb-2">🏢 2. どのサイトを使うべきか</h2>
+                        <p class="text-stone-500 text-sm">
+                            医療系プロジェクトに強いサイトを選ぶことが成功の鍵です。主要3社を比較しました。
+                        </p>
+                    </div>
+                    <!-- Interaction: Filter buttons -->
+                    <div class="mt-4 md:mt-0 flex space-x-2">
+                        <button onclick="filterPlatforms('all')" class="px-4 py-2 text-sm font-medium bg-stone-100 text-stone-600 rounded-full hover:bg-stone-200 focus:ring-2 focus:ring-teal-500 transition active-filter" id="btn-all">全て表示</button>
+                        <button onclick="filterPlatforms('medical')" class="px-4 py-2 text-sm font-medium bg-white border border-stone-200 text-stone-600 rounded-full hover:bg-teal-50 hover:text-teal-700 focus:ring-2 focus:ring-teal-500 transition" id="btn-medical">医療特化</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="platform-grid">
+                    <!-- Cards will be injected via JS -->
+                </div>
+
+                <!-- Visualization & Content Choices:
+                     Goal: Compare costs (Fees).
+                     Viz: Bar Chart.
+                     Justification: Direct comparison of percentage fees is easiest to read in bar format.
+                -->
+                <div class="mt-10 pt-6 border-t border-stone-100">
+                    <h3 class="font-bold text-lg text-stone-700 mb-4">手数料比較シミュレーション (500万円達成時)</h3>
+                    <div class="chart-container h-64">
+                        <canvas id="feeComparisonChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-stone-400 mt-2">※税別・プランにより変動する可能性があります。概算として参照してください。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Process & Methodology (How) -->
+        <section id="process" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-bold text-stone-800 mb-2">📝 3. 実施のステップと成功の鍵</h2>
+                    <p class="text-stone-500 text-sm">
+                        ただページを作るだけでは支援は集まりません。「信頼性」と「拡散」が重要です。
+                    </p>
+                </div>
+
+                <!-- Interactive Timeline/Accordion -->
+                <div class="space-y-4">
+                    <div class="border border-stone-200 rounded-lg overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step1')">
+                            <span>📌 フェーズ1: 準備 (公開2週間前〜)</span>
+                            <span id="icon-step1">▼</span>
+                        </button>
+                        <div id="step1" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
+                            <p class="font-bold text-teal-600">最重要: 診断書・見積もりの準備</p>
+                            <p>サイトの審査には「病名を証明する診断書」と「資金使途の根拠（見積書）」が必須です。これを本人が準備できる体調かどうかが最初のハードルです。</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-stone-200 rounded-lg overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step2')">
+                            <span>✍️ フェーズ2: ストーリー作成</span>
+                            <span id="icon-step2">▼</span>
+                        </button>
+                        <div id="step2" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
+                            <p>以下の構成で文章を作成します。</p>
+                            <ul class="list-disc list-inside text-stone-600 pl-2">
+                                <li>これまでの経緯と現在の病状</li>
+                                <li>なぜこの治療が必要なのか（保険適用外の理由）</li>
+                                <li>支援金を何に使うのか（1円単位で明記）</li>
+                                <li>リターン（お礼）の設定（感謝のメールや経過報告が一般的）</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="border border-stone-200 rounded-lg overflow-hidden">
+                        <button class="w-full flex justify-between items-center p-4 bg-stone-50 hover:bg-stone-100 transition text-left font-bold text-stone-700" onclick="toggleAccordion('step3')">
+                            <span>📢 フェーズ3: 拡散と運用</span>
+                            <span id="icon-step3">▼</span>
+                        </button>
+                        <div id="step3" class="hidden p-4 bg-white text-sm space-y-2 border-t border-stone-200">
+                            <p class="font-bold text-teal-600">最初の5日が勝負</p>
+                            <p>公開直後に支援が伸びないと、サイト内の露出が減ります。職場の有志で「初動の支援」を約束しておく（スタートダッシュ）ことが極めて有効です。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side Column: Tips -->
+            <div class="bg-teal-50 rounded-2xl border border-teal-100 p-6">
+                <h3 class="font-bold text-teal-900 mb-4 text-lg">💡 成功率を高めるポイント</h3>
+                <ul class="space-y-4 text-sm text-teal-800">
+                    <li class="flex gap-3">
+                        <span class="text-2xl">📸</span>
+                        <div>
+                            <span class="font-bold">顔出し・実名の有無</span>
+                            <p class="text-xs mt-1 opacity-80">信頼性に直結するため推奨されますが、プライバシーとの兼ね合いで「本人は仮名、実行者は実名」というパターンもあります。</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-3">
+                        <span class="text-2xl">🔄</span>
+                        <div>
+                            <span class="font-bold">活動報告の頻度</span>
+                            <p class="text-xs mt-1 opacity-80">「治療を受けました」「検査結果が出ました」など、週1回程度の更新があるプロジェクトは支援が集まりやすい傾向にあります。</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section 4: Communication Strategy (Who) -->
+        <section id="communication" class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6 md:p-8">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-stone-800 mb-2">🗣 4. 本人・家族への提案方法</h2>
+                <p class="text-stone-500 text-sm">
+                    金銭的な支援の申し出は、ありがたい反面、患者さんのプライドを傷つけたり、負担になる場合もあります。誰が主体となるかが重要です。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Toggle Interaction for Role Comparison -->
+                <div class="bg-white border border-stone-200 rounded-xl p-5 card-hover cursor-pointer" onclick="selectRole('family')">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-stone-800">🏠 家族が実行者になる</h3>
+                        <span class="text-2xl">◎</span>
+                    </div>
+                    <p class="text-sm text-stone-600 mb-2">患者の配偶者や親がアカウントを開設し、プロジェクトを立ち上げる。</p>
+                    <div class="text-xs bg-teal-50 text-teal-700 p-2 rounded">
+                        <strong>メリット:</strong> 本人は治療に専念できる。最も共感を得やすい。
+                    </div>
+                </div>
+
+                <div class="bg-white border border-stone-200 rounded-xl p-5 card-hover cursor-pointer" onclick="selectRole('friend')">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-lg text-stone-800">🏢 友人・同僚が実行者になる</h3>
+                        <span class="text-2xl">△</span>
+                    </div>
+                    <p class="text-sm text-stone-600 mb-2">「〇〇さんを救う会」などを結成し、代理で立ち上げる。</p>
+                    <div class="text-xs bg-orange-50 text-orange-700 p-2 rounded">
+                        <strong>注意点:</strong> 規約上、原則として「治療を受ける本人または2親等以内の家族」しか資金を受け取れないサイトが多い。口座管理の問題などハードルが高い。
+                    </div>
+                </div>
+            </div>
+
+            <!-- Script Generator -->
+            <div class="bg-stone-50 rounded-xl p-6 border border-stone-200">
+                <h3 class="font-bold text-stone-800 mb-4">💬 提案トークスクリプト例</h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm font-bold text-stone-500 mb-2">STEP 1: 状況の確認（お金の心配を共有する）</p>
+                        <p class="text-stone-800">「治療に専念してもらうために、私たち職場のメンバーで何かできることはないか話し合っています。特に、先進医療など保険外の治療を検討される際、費用のことがネックになってほしくないと思っています。」</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm font-bold text-stone-500 mb-2">STEP 2: 手段の提示（クラウドファンディングという選択肢）</p>
+                        <p class="text-stone-800">「もし費用面で躊躇されている治療があるなら、クラウドファンディングという方法で、私たちがサポートを集める手伝いができませんか？ 例えば、面倒な手続きや文章作成は私たちが引き受けます。」</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-stone-400 text-xs py-8 border-t border-stone-200">
+            <p>※本レポートは一般的な情報をまとめたシミュレーションです。実際のサイト利用規約や医療費は個別の状況により異なります。</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- Data Definitions ---
+
+        // 1. Cost Breakdown Data
+        const costData = {
+            labels: ['治療費(先進医療等)', '入院・通院・生活費', 'プラットフォーム手数料', '予備費'],
+            data: [300, 100, 85, 15], // Example in Man-en (10k yen units) roughly
+            colors: ['#0d9488', '#f97316', '#78716c', '#e5e5e5']
+        };
+
+        // 2. Platform Comparison Data
+        const platforms = [
+            {
+                id: 'readyfor',
+                name: 'READYFOR',
+                type: 'medical',
+                fee: 12, // 12% + options often apply, simplifying for comparison (Standard 12% + settlement 5% approx 17 total usually, typical medical plan might differ)
+                feeDisplay: '12% + 決済手数料',
+                features: ['医療部門専任サポートあり', '信頼性が高い', '審査が厳格'],
+                recommendation: '医療系では実績No.1。信頼性を重視するならここ。',
+                url: '#'
+            },
+            {
+                id: 'campfire',
+                name: 'CAMPFIRE',
+                type: 'general',
+                fee: 17, // 17% standard
+                feeDisplay: '17% (手数料+決済)',
+                features: ['ユーザー数最大級', '拡散力が高い', 'GoodMorning(社会貢献特化)'],
+                recommendation: '広く一般から集めたい場合に有利。',
+                url: '#'
+            },
+            {
+                id: 'yuimaaru',
+                name: 'Yuimaaru',
+                type: 'medical',
+                fee: 15, // Varies
+                feeDisplay: '15% 前後',
+                features: ['医療特化型', '寄付控除対応の相談可', '手厚い伴走'],
+                recommendation: 'より専門的なサポートが必要な場合。',
+                url: '#'
+            }
+        ];
+
+        // --- Visualization Functions (Chart.js) ---
+
+        let donutChart = null;
+        let barChart = null;
+
+        function initCharts() {
+            // Cost Breakdown Chart
+            const ctxCost = document.getElementById('costBreakdownChart').getContext('2d');
+            donutChart = new Chart(ctxCost, {
+                type: 'doughnut',
+                data: {
+                    labels: costData.labels,
+                    datasets: [{
+                        data: costData.data,
+                        backgroundColor: costData.colors,
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif" },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    let value = context.raw;
+                                    let total = context.chart._metasets[context.datasetIndex].total;
+                                    let percentage = Math.round((value / total) * 100) + '%';
+                                    return label + '約' + value + '万円 (' + percentage + ')';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Fee Comparison Chart
+            const ctxFee = document.getElementById('feeComparisonChart').getContext('2d');
+            barChart = new Chart(ctxFee, {
+                type: 'bar',
+                data: {
+                    labels: platforms.map(p => p.name),
+                    datasets: [{
+                        label: '手数料・諸経費目安 (500万円調達時)',
+                        data: platforms.map(p => 500 * (p.fee / 100)), // Calculate estimated fee
+                        backgroundColor: ['#0d9488', '#f97316', '#0ea5e9'],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '手数料 (万円)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw + '万円 (' + platforms[context.dataIndex].feeDisplay + ')';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Interaction Logic ---
+
+        function renderPlatforms(filterType) {
+            const container = document.getElementById('platform-grid');
+            container.innerHTML = ''; // Clear existing
+
+            const filtered = filterType === 'all' ? platforms : platforms.filter(p => p.type === filterType);
+
+            filtered.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `bg-white border border-stone-200 rounded-xl p-6 card-hover flex flex-col justify-between h-full`;
+                
+                let featuresHtml = p.features.map(f => `<li class="text-xs text-stone-600 flex items-center"><span class="text-teal-500 mr-1">✓</span>${f}</li>`).join('');
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-xl text-stone-800">${p.name}</h3>
+                            ${p.type === 'medical' ? '<span class="bg-teal-100 text-teal-800 text-xs px-2 py-1 rounded-full font-bold">医療特化</span>' : ''}
+                        </div>
+                        <p class="text-2xl font-bold text-stone-700 mb-1">${p.feeDisplay}</p>
+                        <p class="text-xs text-stone-400 mb-4">手数料目安</p>
+                        <ul class="space-y-2 mb-4">
+                            ${featuresHtml}
+                        </ul>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-stone-100">
+                        <p class="text-sm font-bold text-stone-700">💡 ポイント</p>
+                        <p class="text-sm text-stone-600 mt-1">${p.recommendation}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterPlatforms(type) {
+            // UI State Update
+            document.querySelectorAll('.active-filter').forEach(el => {
+                el.classList.remove('bg-stone-100', 'active-filter');
+                el.classList.add('bg-white');
+            });
+            const activeBtn = document.getElementById(`btn-${type}`);
+            activeBtn.classList.remove('bg-white');
+            activeBtn.classList.add('bg-stone-100', 'active-filter');
+
+            renderPlatforms(type);
+        }
+
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.textContent = '▲';
+            } else {
+                content.classList.add('hidden');
+                icon.textContent = '▼';
+            }
+        }
+
+        function selectRole(role) {
+            // Simple visual feedback for interaction
+            alert(role === 'family' 
+                ? '【推奨】家族実行者：本人名義の診断書や口座が使えるため、審査がスムーズです。' 
+                : '【注意】友人実行者：集まった資金を本人に渡す際、贈与税がかかる可能性があります。また、サイトによっては「代理実行」の特約手続きが必要です。必ず事前にプラットフォームへ相談してください。');
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderPlatforms('all');
+        });
+
+    </script>
+</body>
+</html>
