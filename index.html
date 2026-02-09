@@ -177,10 +177,9 @@
                 <button onclick="filterPlatforms('forgood')" id="btn-forgood" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">For Good</button>
                 <button onclick="filterPlatforms('readyfor')" id="btn-readyfor" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">READYFOR</button>
                 <button onclick="filterPlatforms('campfire')" id="btn-campfire" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">CAMPFIRE</button>
-                <button onclick="filterPlatforms('yuimaaru')" id="btn-yuimaaru" class="platform-tab px-4 py-2 text-sm font-medium bg-white text-slate-600 border border-slate-200 rounded hover:bg-slate-50 transition-colors">Yuimaaru</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10" id="platform-grid"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10" id="platform-grid"></div>
 
             <!-- Detailed Comparison Table -->
             <div class="bg-white border border-slate-200 rounded overflow-hidden mb-10">
@@ -192,10 +191,9 @@
                         <thead>
                             <tr class="border-b border-slate-200">
                                 <th class="text-left p-4 font-medium text-slate-600 min-w-[120px]">項目</th>
-                                <th class="text-left p-4 font-medium text-slate-600 min-w-[180px]">For Good</th>
-                                <th class="text-left p-4 font-medium text-slate-600 min-w-[180px]">READYFOR</th>
-                                <th class="text-left p-4 font-medium text-slate-600 min-w-[180px]">CAMPFIRE</th>
-                                <th class="text-left p-4 font-medium text-slate-600 min-w-[180px]">Yuimaaru</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">For Good</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">READYFOR</th>
+                                <th class="text-left p-4 font-medium text-slate-600 min-w-[200px]">CAMPFIRE</th>
                             </tr>
                         </thead>
                         <tbody class="text-slate-600">
@@ -204,42 +202,36 @@
                                 <td class="p-4"><span class="text-teal-600 font-semibold">原則0%</span><br><span class="text-xs text-slate-400">支援金は全額受取可</span></td>
                                 <td class="p-4">14%+税<br><span class="text-xs text-slate-400">（運営9%＋決済5%）</span></td>
                                 <td class="p-4">12%+税<br><span class="text-xs text-slate-400">（利用7%＋決済5%）Social Good</span></td>
-                                <td class="p-4">15%前後<br><span class="text-xs text-slate-400">要確認</span></td>
                             </tr>
                             <tr class="border-b border-slate-100">
                                 <td class="p-4 font-medium text-slate-700">支援者負担</td>
                                 <td class="p-4">220円/支援<br>＋支援総額の5%</td>
                                 <td class="p-4">220円/支援</td>
                                 <td class="p-4">228円〜（1万円未満）<br>または支援額の2.27%</td>
-                                <td class="p-4">要確認</td>
                             </tr>
                             <tr class="border-b border-slate-100">
                                 <td class="p-4 font-medium text-slate-700">募集方式</td>
                                 <td class="p-4">All-inのみ</td>
                                 <td class="p-4">All-or-Nothing<br>All-in（承認制）</td>
                                 <td class="p-4">All-in<br>All-or-Nothing</td>
-                                <td class="p-4">要確認</td>
                             </tr>
                             <tr class="border-b border-slate-100">
                                 <td class="p-4 font-medium text-slate-700">第三者支援</td>
                                 <td class="p-4"><span class="text-teal-600">可能</span><br><span class="text-xs text-slate-400">診断書・住民票等＋病院実態確認</span></td>
                                 <td class="p-4"><span class="text-teal-600">可能</span><br><span class="text-xs text-slate-400">「寄贈先」明示で実例あり</span></td>
                                 <td class="p-4"><span class="text-amber-600">原則不可</span><br><span class="text-xs text-slate-400">規約で制限・慎重確認必要</span></td>
-                                <td class="p-4"><span class="text-teal-600">可能</span><br><span class="text-xs text-slate-400">寄付控除対応の相談可</span></td>
                             </tr>
                             <tr class="border-b border-slate-100">
                                 <td class="p-4 font-medium text-slate-700">入金タイミング</td>
                                 <td class="p-4">終了翌々月7日<br><span class="text-xs text-slate-400">早期入金あり（3%/最低2万円）</span></td>
                                 <td class="p-4">終了翌々月10日<br><span class="text-xs text-slate-400">早期入金オプションあり</span></td>
                                 <td class="p-4">月末締め翌月末</td>
-                                <td class="p-4">要確認</td>
                             </tr>
                             <tr>
                                 <td class="p-4 font-medium text-slate-700">審査の特徴</td>
                                 <td class="p-4 text-xs leading-relaxed">ソーシャルグッド限定。余剰金の扱い・会計報告など団体規約面まで要求</td>
                                 <td class="p-4 text-xs leading-relaxed">All-inは寄付金控除対象団体/上場企業等の条件。少額でも実行可能であること等を求める</td>
                                 <td class="p-4 text-xs leading-relaxed">「極端に特定個人の目的」「第三者寄附目的」を制限。個人治療費の代理募集は適合性を慎重確認</td>
-                                <td class="p-4 text-xs leading-relaxed">医療特化型。手厚い伴走サポートあり</td>
                             </tr>
                         </tbody>
                     </table>
@@ -568,17 +560,6 @@
                 features: ['ユーザー数最大級', '拡散力が高い', 'Social Good対応'],
                 recommendation: '第三者支援は規約で原則不可。本人・家族が実行者になる場合のみ。',
                 thirdParty: false
-            },
-            {
-                id: 'yuimaaru',
-                name: 'Yuimaaru',
-                type: 'medical',
-                fee: 15,
-                feeDisplay: '15%前後',
-                supporterFee: '要確認',
-                features: ['医療特化型', '寄付控除対応の相談可', '手厚い伴走サポート'],
-                recommendation: 'より専門的なサポートが必要な場合。医療に特化した小規模プラットフォーム。',
-                thirdParty: true
             }
         ];
 
@@ -653,11 +634,11 @@
             barChart = new Chart(ctxFee.getContext('2d'), {
                 type: 'bar',
                 data: {
-                    labels: ['For Good', 'READYFOR', 'CAMPFIRE', 'Yuimaaru'],
+                    labels: ['For Good', 'READYFOR', 'CAMPFIRE'],
                     datasets: [{
                         label: '実行者手数料（万円）',
-                        data: [0, 70, 60, 75],
-                        backgroundColor: ['#14b8a6', '#64748b', '#94a3b8', '#5eead4'],
+                        data: [0, 70, 60],
+                        backgroundColor: ['#14b8a6', '#64748b', '#94a3b8'],
                         borderRadius: 3,
                         maxBarThickness: 50
                     }]
