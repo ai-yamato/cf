@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東京移動スケジュール</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f9fb;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --text-sub: #6b7280;
+            --accent: #2563eb;
+            --accent-light: #eff6ff;
+            --green: #059669;
+            --green-light: #ecfdf5;
+            --orange: #d97706;
+            --orange-light: #fffbeb;
+            --purple: #7c3aed;
+            --purple-light: #f5f3ff;
+            --red: #dc2626;
+            --border: #e5e7eb;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-sub);
+            font-size: 15px;
+        }
+
+        /* ===== SUMMARY CARDS ===== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 36px;
+        }
+
+        .summary-card {
+            background: var(--card);
+            border-radius: var(--radius-sm);
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .summary-card .label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .summary-card .unit {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-sub);
+        }
+
+        .summary-card.cost .value {
+            color: var(--accent);
+        }
+
+        .summary-card.time .value {
+            color: var(--green);
+        }
+
+        .summary-card.transfers .value {
+            color: var(--orange);
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .section-number {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .section-number.blue {
+            background: var(--accent);
+        }
+
+        .section-number.green {
+            background: var(--green);
+        }
+
+        .section-number.purple {
+            background: var(--purple);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        /* ===== ROUTE CARD ===== */
+        .route-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .route-meta {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .route-meta-item {
+            flex: 1;
+            padding: 14px 16px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .route-meta-item:last-child {
+            border-right: none;
+        }
+
+        .route-meta-item .meta-label {
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .route-meta-item .meta-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .route-meta-item .meta-value.cost {
+            color: var(--accent);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            padding: 24px 20px;
+        }
+
+        .timeline-step {
+            display: flex;
+            gap: 16px;
+            position: relative;
+        }
+
+        .timeline-step:not(:last-child) {
+            padding-bottom: 0;
+        }
+
+        .timeline-left {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 56px;
+            flex-shrink: 0;
+        }
+
+        .timeline-time {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
+        .timeline-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            background: #fff;
+            margin: 8px 0 4px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-dot.filled {
+            background: var(--accent);
+        }
+
+        .timeline-dot.green {
+            border-color: var(--green);
+        }
+
+        .timeline-dot.green.filled {
+            background: var(--green);
+        }
+
+        .timeline-dot.purple {
+            border-color: var(--purple);
+        }
+
+        .timeline-dot.purple.filled {
+            background: var(--purple);
+        }
+
+        .timeline-line {
+            width: 2px;
+            flex: 1;
+            min-height: 32px;
+        }
+
+        .timeline-line.train {
+            background: var(--accent);
+        }
+
+        .timeline-line.walk {
+            background: repeating-linear-gradient(to bottom,
+                    var(--text-sub) 0px,
+                    var(--text-sub) 4px,
+                    transparent 4px,
+                    transparent 8px);
+        }
+
+        .timeline-line.green {
+            background: var(--green);
+        }
+
+        .timeline-line.purple {
+            background: var(--purple);
+        }
+
+        .timeline-right {
+            flex: 1;
+            padding-bottom: 24px;
+        }
+
+        .timeline-station {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .timeline-detail {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-bottom: 4px;
+        }
+
+        .transport-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .transport-badge.jr {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .transport-badge.tokyu {
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        .transport-badge.metro {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .transport-badge.saitama {
+            background: #e8eaf6;
+            color: #283593;
+        }
+
+        .transport-badge.walk {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .transport-badge.taxi {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .transport-badge .badge-icon {
+            font-size: 14px;
+        }
+
+        .transport-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .transport-time {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+
+        /* ===== STAY BLOCK ===== */
+        .stay-block {
+            background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+            border: 1px dashed var(--green);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin: 8px 0 8px;
+        }
+
+        .stay-block.purple-bg {
+            background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%);
+            border-color: var(--purple);
+        }
+
+        .stay-block .stay-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stay-block .stay-detail {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        /* ===== TIP BOX ===== */
+        .tip-box {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .tip-box h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-list {
+            list-style: none;
+        }
+
+        .tip-list li {
+            position: relative;
+            padding: 8px 0 8px 28px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .tip-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--green-light);
+            color: var(--green);
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tip-list li+li {
+            border-top: 1px solid var(--border);
+        }
+
+        /* ===== COST TABLE ===== */
+        .cost-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 12px;
+        }
+
+        .cost-table th {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-align: left;
+            padding: 10px 16px;
+            background: #f9fafb;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cost-table th:last-child {
+            text-align: right;
+        }
+
+        .cost-table td {
+            padding: 12px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cost-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .cost-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cost-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 16px 0;
+            border-top: 2px solid var(--text);
+            margin-top: 8px;
+        }
+
+        .cost-total .total-label {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .cost-total .total-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* ===== HOW-TO BOX ===== */
+        .howto-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .howto-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .howto-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .howto-step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .howto-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--accent-light);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .howto-text {
+            font-size: 14px;
+            line-height: 1.6;
+            padding-top: 3px;
+        }
+
+        .howto-text strong {
+            color: var(--accent);
+        }
+
+        /* ===== LINE COLOR INDICATORS ===== */
+        .line-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+
+        .line-jr-yamanote {
+            background: #80c241;
+        }
+
+        .line-tokyu-den {
+            background: #e60012;
+        }
+
+        .line-metro-namboku {
+            background: #00ada9;
+        }
+
+        .line-saitama {
+            background: #2847b0;
+        }
+
+        .line-jr-musashino {
+            background: #f15a22;
+        }
+
+        .line-jr-saikyo {
+            background: #00b48d;
+        }
+
+        /* ===== PLATFORM INFO ===== */
+        .platform-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #f3f4f6;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-left: 6px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 32px 0 0;
+            color: var(--text-sub);
+            font-size: 12px;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .summary-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .summary-card .value {
+                font-size: 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .route-meta {
+                flex-wrap: wrap;
+            }
+
+            .route-meta-item {
+                flex: 1 1 auto;
+                min-width: 30%;
+            }
+        }
+
+        /* ===== ANIMATION ===== */
+        .route-card,
+        .tip-box,
+        .howto-card,
+        .summary-card {
+            animation: fadeUp 0.5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(2) .route-card {
+            animation-delay: 0.1s;
+        }
+
+        .section:nth-child(3) .route-card {
+            animation-delay: 0.2s;
+        }
+
+        .section:nth-child(4) .route-card {
+            animation-delay: 0.3s;
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .container {
+                padding: 0;
+            }
+
+            .route-card,
+            .tip-box,
+            .howto-card,
+            .summary-card {
+                animation: none;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+
+        /* ===== WARNING ===== */
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: var(--radius-sm);
+            padding: 14px 20px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #92400e;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .warning-box .warn-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ===== REFERENCE LINK ===== */
+        .ref-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: #f0f4ff;
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .ref-link:hover {
+            background: #dbeafe;
+        }
+
+        .ref-links-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 20px;
+            margin-top: 16px;
+        }
+
+        .ref-links-box .ref-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 8px;
+        }
+
+        .ref-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="header-badge">🗓 2026年3月17日（火）</div>
+            <h1>東京 移動スケジュール</h1>
+            <p>新宿ホテル発 → 東京育成園（11:00）→ 国立武蔵野学院（15:00）</p>
+        </div>
+
+        <!-- ===== SUMMARY ===== -->
+        <div class="summary-grid">
+            <div class="summary-card cost" style="animation-delay:0s">
+                <div class="label">電車運賃合計（IC）</div>
+                <div class="value">1,251<span class="unit">円</span></div>
+                <div style="font-size:11px;color:var(--text-sub);margin-top:2px">現金: 1,260円</div>
+            </div>
+            <div class="summary-card time" style="animation-delay:0.05s">
+                <div class="label">総移動時間</div>
+                <div class="value">約2<span class="unit">時間</span></div>
+            </div>
+            <div class="summary-card transfers" style="animation-delay:0.1s">
+                <div class="label">乗り換え</div>
+                <div class="value">計2<span class="unit">回</span></div>
+            </div>
+        </div>
+
+        <!-- ===== SECTION 1: 新宿 → 東京育成園 ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number blue">1</div>
+                <div>
+                    <div class="section-title">新宿駅 → 東京育成園</div>
+                    <div class="section-subtitle">🕙 朝の移動（ホテル出発 → 11:00着）</div>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div class="route-meta">
+                    <div class="route-meta-item">
+                        <div class="meta-label">所要時間</div>
+                        <div class="meta-value">約20分</div>
+                    </div>
+                    <div class="route-meta-item">
+                        <div class="meta-label">運賃</div>
+                        <div class="meta-value cost">379円<span
+                                style="font-size:12px;font-weight:400;color:var(--text-sub)"> IC</span></div>
+                        <div style="font-size:12px;color:var(--text-sub)">現金 380円</div>
+                    </div>
+                    <div class="route-meta-item">
+                        <div class="meta-label">乗り換え</div>
+                        <div class="meta-value">1回</div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <!-- 新宿出発 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">10:25</span>
+                            <div class="timeline-dot filled"></div>
+                            <div class="timeline-line train"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">新宿駅</div>
+                            <div class="timeline-detail">JR埼京線ホーム <span class="platform-info">4番線</span></div>
+                            <div class="transport-info">
+                                <span class="transport-badge jr">
+                                    <span class="line-indicator line-jr-saikyo"></span>
+                                    JR埼京線 通勤快速（新木場行）
+                                </span>
+                            </div>
+                            <span class="transport-time">🕐 約4分乗車</span>
+                        </div>
+                    </div>
+
+                    <!-- 渋谷乗り換え -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">10:29</span>
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-line walk"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">渋谷駅 <span
+                                    style="font-size:13px;font-weight:400;color:var(--orange);">🔄 乗り換え</span></div>
+                            <div class="timeline-detail">JR埼京線 → 東急田園都市線へ（徒歩約9分）</div>
+                            <div class="transport-info">
+                                <span class="transport-badge walk">
+                                    <span class="badge-icon">🚶</span> 乗り換え徒歩
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 渋谷→駒沢大学 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">10:38</span>
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-line train" style="background:var(--red)"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">渋谷駅（田園都市線）</div>
+                            <div class="timeline-detail">東急田園都市線ホーム（地下） <span class="platform-info">1番線</span></div>
+                            <div class="transport-info">
+                                <span class="transport-badge tokyu">
+                                    <span class="line-indicator line-tokyu-den"></span>
+                                    東急田園都市線（鷺沼行）
+                                </span>
+                            </div>
+                            <span class="transport-time">🕐 約7分乗車（2駅目）</span>
+                        </div>
+                    </div>
+
+                    <!-- 駒沢大学駅 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">10:45</span>
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-line walk"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">駒沢大学駅</div>
+                            <div class="timeline-detail">西口から出てください</div>
+                            <div class="transport-info">
+                                <span class="transport-badge walk">
+                                    <span class="badge-icon">🚶</span> 徒歩 約5分
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 東京育成園 着 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">10:50</span>
+                            <div class="timeline-dot filled green"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station" style="color:var(--green)">🏢 東京育成園 到着</div>
+                            <div class="timeline-detail">東京都世田谷区上馬4丁目12番3号</div>
+                            <div class="stay-block">
+                                <div class="stay-title">📍 訪問（11:00〜）</div>
+                                <div class="stay-detail">余裕を持って約10分前に到着</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOW-TO -->
+            <div class="howto-card" style="margin-top:16px">
+                <h3>🗺 新宿駅での乗り方ガイド</h3>
+                <div class="howto-steps">
+                    <div class="howto-step">
+                        <div class="howto-num">1</div>
+                        <div class="howto-text">改札を入り、<strong>JR埼京線 通勤快速（新木場行）</strong> <strong>4番線</strong>のホームへ</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">2</div>
+                        <div class="howto-text">埼京線に乗車し、<strong>次の駅「渋谷」</strong>で降りる</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">3</div>
+                        <div class="howto-text">渋谷駅で「<strong>東急田園都市線</strong>」の案内表示に従い地下へ移動</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">4</div>
+                        <div class="howto-text">田園都市線 <strong>1番線</strong> から乗り、<strong>2駅目「駒沢大学」</strong>で下車</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">5</div>
+                        <div class="howto-text"><strong>西口</strong>を出て直進で約5分、東京育成園に到着</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REFERENCE LINKS -->
+            <div class="ref-links-box">
+                <div class="ref-title">🔗 参考にした時刻表サイト（3月17日）</div>
+                <div class="ref-links-list">
+                    <a class="ref-link"
+                        href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E6%96%B0%E5%AE%BF&dnvStationName=%E9%A7%92%E6%B2%A2%E5%A4%A7%E5%AD%A6&year=2026&month=03&day=17&hour=10&minute=25"
+                        target="_blank">📍 NAVITIME（新宿→駒沢大学 / 10:25発）</a>
+                    <a class="ref-link"
+                        href="https://transit.yahoo.co.jp/search/result?from=%E6%96%B0%E5%AE%BF&to=%E9%A7%92%E6%B2%A2%E5%A4%A7%E5%AD%A6&y=2026&m=03&d=17&hh=10&m1=2&m2=5&type=1"
+                        target="_blank">📍 Yahoo!乗換案内（10:25発）</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== SECTION 2: 東京育成園 → 国立武蔵野学院 ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number green">2</div>
+                <div>
+                    <div class="section-title">東京育成園 → 国立武蔵野学院</div>
+                    <div class="section-subtitle">🕐 午後の移動（15:00着）</div>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div class="route-meta">
+                    <div class="route-meta-item">
+                        <div class="meta-label">所要時間</div>
+                        <div class="meta-value">約1時間30分</div>
+                    </div>
+                    <div class="route-meta-item">
+                        <div class="meta-label">運賃</div>
+                        <div class="meta-value cost">872円<span
+                                style="font-size:12px;font-weight:400;color:var(--text-sub)"> IC</span></div>
+                        <div style="font-size:12px;color:var(--text-sub)">現金 880円</div>
+                    </div>
+                    <div class="route-meta-item">
+                        <div class="meta-label">乗り換え</div>
+                        <div class="meta-value">1回</div>
+                    </div>
+                </div>
+
+                <div class="timeline">
+                    <!-- 東京育成園出発 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">13:24</span>
+                            <div class="timeline-dot filled green"></div>
+                            <div class="timeline-line walk"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">🏢 東京育成園 出発</div>
+                            <div class="timeline-detail">駒沢大学駅へ向かう</div>
+                            <div class="transport-info">
+                                <span class="transport-badge walk">
+                                    <span class="badge-icon">🚶</span> 徒歩 約5分
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 駒沢大学 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">13:29</span>
+                            <div class="timeline-dot green"></div>
+                            <div class="timeline-line train" style="background:var(--red)"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">駒沢大学駅</div>
+                            <div class="timeline-detail">東急田園都市線ホーム（渋谷・押上方面）</div>
+                            <div class="transport-info">
+                                <span class="transport-badge tokyu">
+                                    <span class="line-indicator line-tokyu-den"></span>
+                                    東急田園都市線 準急（押上行）
+                                </span>
+                            </div>
+                            <span class="transport-time">🕐 約14分乗車</span>
+                        </div>
+                    </div>
+
+                    <!-- 永田町 乗り換え -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">13:43</span>
+                            <div class="timeline-dot green"></div>
+                            <div class="timeline-line walk"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">永田町駅 <span
+                                    style="font-size:13px;font-weight:400;color:var(--orange);">🔄 乗り換え</span></div>
+                            <div class="timeline-detail">半蔵門線 → 南北線への乗り換え（徒歩約16分）</div>
+                            <div class="transport-info">
+                                <span class="transport-badge walk">
+                                    <span class="badge-icon">🚶</span> ホーム間移動
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 永田町→東川口 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">13:59</span>
+                            <div class="timeline-dot green"></div>
+                            <div class="timeline-line train green"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">永田町駅（南北線）</div>
+                            <div class="timeline-detail">東京メトロ南北線 → 埼玉高速鉄道 直通</div>
+                            <div class="transport-info">
+                                <span class="transport-badge metro">
+                                    <span class="line-indicator line-metro-namboku"></span>
+                                    南北線（浦和美園行）
+                                </span>
+                            </div>
+                            <span class="transport-time">🕐 約43分乗車（乗り換えなしで直通）</span>
+                            <div class="warning-box">
+                                <span class="warn-icon">💡</span>
+                                <span>「浦和美園」行きに乗れば<strong>乗り換えなし</strong>で東川口まで行けます。赤羽岩淵から先は埼玉高速鉄道に直通します。</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 東川口駅 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">14:42</span>
+                            <div class="timeline-dot green"></div>
+                            <div class="timeline-line walk"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station">東川口駅</div>
+                            <div class="timeline-detail">タクシー乗り場へ（駅前ロータリー）</div>
+                            <div class="transport-info">
+                                <span class="transport-badge taxi">
+                                    <span class="badge-icon">🚕</span> タクシー 約10分（約1,200〜1,500円）
+                                </span>
+                            </div>
+                            <div class="warning-box">
+                                <span class="warn-icon">📍</span>
+                                <span>徒歩だと約20〜25分かかります。初めての場所なので<strong>タクシー推奨</strong>です。</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 国立武蔵野学院 着 -->
+                    <div class="timeline-step">
+                        <div class="timeline-left">
+                            <span class="timeline-time">14:52</span>
+                            <div class="timeline-dot filled purple"></div>
+                        </div>
+                        <div class="timeline-right">
+                            <div class="timeline-station" style="color:var(--purple)">🏛 国立武蔵野学院 到着</div>
+                            <div class="timeline-detail">埼玉県さいたま市緑区大字大門1030</div>
+                            <div class="stay-block purple-bg">
+                                <div class="stay-title">📍 訪問（15:00〜）</div>
+                                <div class="stay-detail">余裕を持って約8分前に到着</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HOW-TO -->
+            <div class="howto-card" style="margin-top:16px">
+                <h3>🗺 駒沢大学 → 東川口の乗り方ガイド</h3>
+                <div class="howto-steps">
+                    <div class="howto-step">
+                        <div class="howto-num">1</div>
+                        <div class="howto-text">駒沢大学駅で<strong>東急田園都市線「渋谷・押上方面」</strong>に乗車</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">2</div>
+                        <div class="howto-text"><strong>「永田町」駅</strong>で下車し、<strong>「南北線」</strong>の案内に従う</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">3</div>
+                        <div class="howto-text">南北線ホームで<strong>「浦和美園」行き</strong>の電車に乗車</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">4</div>
+                        <div class="howto-text">途中で埼玉高速鉄道に直通。<strong>乗り換え不要</strong>でそのまま乗車</div>
+                    </div>
+                    <div class="howto-step">
+                        <div class="howto-num">5</div>
+                        <div class="howto-text"><strong>「東川口」駅</strong>で下車。改札を出てタクシーで国立武蔵野学院へ</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REFERENCE LINKS -->
+            <div class="ref-links-box">
+                <div class="ref-title">🔗 参考にした時刻表サイト（3月17日）</div>
+                <div class="ref-links-list">
+                    <a class="ref-link"
+                        href="https://www.navitime.co.jp/transfer/searchlist?orvStationName=%E9%A7%92%E6%B2%A2%E5%A4%A7%E5%AD%A6&dnvStationName=%E6%9D%B1%E5%B7%9D%E5%8F%A3&year=2026&month=03&day=17&hour=13&minute=29"
+                        target="_blank">📍 NAVITIME（駒沢大学→東川口 / 13:29発）</a>
+                    <a class="ref-link"
+                        href="https://transit.yahoo.co.jp/search/result?from=%E9%A7%92%E6%B2%A2%E5%A4%A7%E5%AD%A6&to=%E6%9D%B1%E5%B7%9D%E5%8F%A3&y=2026&m=03&d=17&hh=13&m1=2&m2=9&type=1"
+                        target="_blank">📍 Yahoo!乗換案内（13:29発）</a>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ===== COST SUMMARY ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number blue" style="background:#1f2937">💰</div>
+                <div>
+                    <div class="section-title">交通費まとめ</div>
+                    <div class="section-subtitle">ICカード（Suica / PASMO）利用時</div>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div style="padding:20px">
+                    <table class="cost-table">
+                        <thead>
+                            <tr>
+                                <th>区間</th>
+                                <th>金額（IC / 現金）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>新宿 → 駒沢大学</div>
+                                    <div style="font-size:12px;color:var(--text-sub)">JR埼京線 + 東急田園都市線</div>
+                                </td>
+                                <td>379円<div style="font-size:11px;font-weight:400;color:var(--text-sub)">現金 380円</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>駒沢大学 → 東川口</div>
+                                    <div style="font-size:12px;color:var(--text-sub)">東急 + メトロ + 埼玉高速</div>
+                                </td>
+                                <td>872円<div style="font-size:11px;font-weight:400;color:var(--text-sub)">現金 880円</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="cost-total">
+                        <span class="total-label">電車運賃 合計</span>
+                        <span class="total-value">1,251円<span
+                                style="font-size:13px;font-weight:500;color:var(--text-sub)"> / 現金 1,260円</span></span>
+                    </div>
+                    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+                        <table class="cost-table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div>タクシー代（東川口 → 武蔵野学院）</div>
+                                        <div style="font-size:12px;color:var(--text-sub)">片道（概算）</div>
+                                    </td>
+                                    <td style="color:var(--orange)">約1,200〜1,500円</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="cost-total">
+                            <span class="total-label">交通費 総合計（概算）</span>
+                            <span class="total-value">約2,450〜2,750円</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TIPS ===== -->
+        <div class="tip-box">
+            <h3>💡 東京に行ったことがない方への Tips</h3>
+            <ul class="tip-list">
+                <li><strong>Suica または PASMO</strong> を事前に用意しておくと、切符を買う手間がなくなり便利です。モバイルSuicaも◎</li>
+                <li>新宿駅は巨大です。<strong>「JR」の案内</strong>に従って進んでください。迷ったら駅員さんに聞きましょう</li>
+                <li>渋谷駅の乗り換えでは、<strong>「田園都市線」のオレンジ色の案内表示</strong>を探してください</li>
+                <li>永田町駅での乗り換えは地下通路を歩きます。<strong>「南北線」の案内</strong>を確認しながら移動</li>
+                <li>東川口駅からのタクシーは、運転手さんに<strong>「国立武蔵野学院まで」</strong>と伝えればOK</li>
+                <li>ラッシュ時間帯（7:30-9:30/17:30-19:30）は混雑するので避けるのがベター</li>
+            </ul>
+        </div>
+
+        <!-- ===== 1日の流れ（ビジュアルまとめ） ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number blue" style="background:#1f2937">📋</div>
+                <div>
+                    <div class="section-title">1日の流れ</div>
+                    <div class="section-subtitle">タイムライン概要</div>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div style="padding:24px">
+                    <div style="display:flex;flex-direction:column;gap:0;">
+                        <!-- 10:25 -->
+                        <div style="display:flex;gap:16px;align-items:center;padding:10px 0;">
+                            <div style="width:60px;font-size:14px;font-weight:700;text-align:right;flex-shrink:0;">10:25
+                            </div>
+                            <div
+                                style="width:12px;height:12px;border-radius:50%;background:var(--accent);flex-shrink:0;">
+                            </div>
+                            <div style="font-size:14px;">🏨 新宿駅出発</div>
+                        </div>
+                        <div style="display:flex;gap:16px;">
+                            <div style="width:60px;"></div>
+                            <div style="width:12px;display:flex;justify-content:center;flex-shrink:0;">
+                                <div style="width:2px;height:24px;background:var(--accent);"></div>
+                            </div>
+                            <div style="font-size:12px;color:var(--text-sub);padding:4px 0;">🚃 JR埼京線 + 田園都市線（約20分・IC
+                                379円）
+                            </div>
+                        </div>
+                        <!-- 10:50 -->
+                        <div style="display:flex;gap:16px;align-items:center;padding:10px 0;">
+                            <div style="width:60px;font-size:14px;font-weight:700;text-align:right;flex-shrink:0;">10:50
+                            </div>
+                            <div
+                                style="width:12px;height:12px;border-radius:50%;background:var(--green);flex-shrink:0;">
+                            </div>
+                            <div style="font-size:14px;">🏢 <strong>東京育成園</strong> 到着</div>
+                        </div>
+                        <div style="display:flex;gap:16px;">
+                            <div style="width:60px;"></div>
+                            <div style="width:12px;display:flex;justify-content:center;flex-shrink:0;">
+                                <div
+                                    style="width:2px;height:24px;background:repeating-linear-gradient(to bottom,var(--green) 0px,var(--green) 4px,transparent 4px,transparent 8px);">
+                                </div>
+                            </div>
+                            <div style="font-size:12px;color:var(--green);padding:4px 0;font-weight:600;">📍 訪問時間（約2時間半）
+                            </div>
+                        </div>
+                        <!-- 13:24 -->
+                        <div style="display:flex;gap:16px;align-items:center;padding:10px 0;">
+                            <div style="width:60px;font-size:14px;font-weight:700;text-align:right;flex-shrink:0;">13:24
+                            </div>
+                            <div
+                                style="width:12px;height:12px;border-radius:50%;background:var(--green);flex-shrink:0;">
+                            </div>
+                            <div style="font-size:14px;">🏢 東京育成園 出発</div>
+                        </div>
+                        <div style="display:flex;gap:16px;">
+                            <div style="width:60px;"></div>
+                            <div style="width:12px;display:flex;justify-content:center;flex-shrink:0;">
+                                <div style="width:2px;height:24px;background:var(--green);"></div>
+                            </div>
+                            <div style="font-size:12px;color:var(--text-sub);padding:4px 0;">🚃 田園都市線 + 南北線 +
+                                タクシー（約1時間30分・IC 872円+タクシー代）</div>
+                        </div>
+                        <!-- 14:52 -->
+                        <div style="display:flex;gap:16px;align-items:center;padding:10px 0;">
+                            <div style="width:60px;font-size:14px;font-weight:700;text-align:right;flex-shrink:0;">14:52
+                            </div>
+                            <div
+                                style="width:12px;height:12px;border-radius:50%;background:var(--purple);flex-shrink:0;">
+                            </div>
+                            <div style="font-size:14px;">🏛 <strong>国立武蔵野学院</strong> 到着（15:00〜 訪問）</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>※ 時刻は目安です。当日の運行状況により前後する可能性があります。</p>
+            <p>※ 最新の時刻表は <a href="https://www.navitime.co.jp/" target="_blank">NAVITIME</a> や <a
+                    href="https://transit.yahoo.co.jp/" target="_blank">Yahoo!乗換案内</a> で確認してください。</p>
+            <p style="margin-top:8px;">作成日: 2026年3月3日 ｜ 移動日: 2026年3月17日（火）</p>
+        </div>
+
+    </div>
+</body>
+
+</html>
